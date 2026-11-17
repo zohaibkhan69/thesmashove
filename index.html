@@ -1,218 +1,1886 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion } from "framer-motion";
-import { ArrowRight, CalendarDays, Clock, MapPin, Star, Quote } from "lucide-react";
-import heroImg from "@/assets/hero-burger.jpg";
-import ambienceImg from "@/assets/ambience.jpg";
-import pizzaImg from "@/assets/dish-pizza.jpg";
-import { Button } from "@/components/ui/button";
-import { Reveal, SectionHeading } from "@/components/site/Reveal";
-import { DishCard } from "@/components/site/DishCard";
-import { SIGNATURES, getDish, formatRs } from "@/lib/menu";
-import { useCart } from "@/store/cart";
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TSO — The Smash Oven | Model Town, Multan</title>
+  <!-- Google Fonts: Playfair Display (Luxury Serif) & Inter (Clean Sans) & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            serif: ['"Playfair Display"', 'serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
 
-export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "TSO – The Smash Oven | Smash Burgers & Deep-Dish Pizza in Multan" },
+  <!-- React 18 & Babel Standalone for instant browser execution on GitHub Pages -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <style>
+    body {
+      background-color: #0B0B0C;
+      color: #F5F5F7;
+      overflow-x: hidden;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-up {
+      animation: fadeSlideUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+  </style>
+</head>
+<body class="bg-[#0B0B0C] text-[#F5F5F7] antialiased selection:bg-[#D4AF37] selection:text-black">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useMemo } = React;
+
+    // --- INLINE SVG ICON COMPONENTS (Exact Lucide Icons) ---
+    const Icon = ({ children, className = "w-5 h-5" }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+        {children}
+      </svg>
+    );
+
+    const ShoppingBag = ({ className }) => <Icon className={className}><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></Icon>;
+    const Search = ({ className }) => <Icon className={className}><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></Icon>;
+    const Flame = ({ className }) => <Icon className={className}><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></Icon>;
+    const Plus = ({ className }) => <Icon className={className}><path d="M5 12h14"/><path d="M12 5v14"/></Icon>;
+    const Minus = ({ className }) => <Icon className={className}><path d="M5 12h14"/></Icon>;
+    const X = ({ className }) => <Icon className={className}><path d="M18 6 6 18"/><path d="m6 6 12 12"/></Icon>;
+    const Phone = ({ className }) => <Icon className={className}><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></Icon>;
+    const MessageSquare = ({ className }) => <Icon className={className}><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></Icon>;
+    const Clock = ({ className }) => <Icon className={className}><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></Icon>;
+    const Star = ({ className }) => <Icon className={className}><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></Icon>;
+    const Utensils = ({ className }) => <Icon className={className}><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></Icon>;
+    const Calendar = ({ className }) => <Icon className={className}><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></Icon>;
+    const CreditCard = ({ className }) => <Icon className={className}><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></Icon>;
+    const Banknote = ({ className }) => <Icon className={className}><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></Icon>;
+    const Smartphone = ({ className }) => <Icon className={className}><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></Icon>;
+    const ChevronRight = ({ className }) => <Icon className={className}><path d="m9 18 6-6-6-6"/></Icon>;
+    const Volume2 = ({ className }) => <Icon className={className}><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></Icon>;
+    const VolumeX = ({ className }) => <Icon className={className}><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="22" x2="16" y1="9" y2="15"/><line x1="16" x2="22" y1="9" y2="15"/></Icon>;
+    const Bike = ({ className }) => <Icon className={className}><circle cx="18.5" cy="17.5" r="3.5"/><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="15" cy="5" r="1"/><path d="M12 17.5V14l-3-3 4-3 2 3h2"/></Icon>;
+    const Award = ({ className }) => <Icon className={className}><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></Icon>;
+    const Sparkles = ({ className }) => <Icon className={className}><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></Icon>;
+    const Send = ({ className }) => <Icon className={className}><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></Icon>;
+    const CheckCircle2 = ({ className }) => <Icon className={className}><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></Icon>;
+
+    // --- OFFICIAL TSO MULTAN ADD-ONS ---
+    const TSO_ADDONS = [
+      { id: 'bun', name: 'Extra Soft Bun', price: 60 },
+      { id: 'garlic-mayo', name: 'Garlic Mayo Dip', price: 80 },
+      { id: 'honey-chilli', name: 'Honey Chilli Sauce', price: 150 },
+      { id: 'spicy-mayo', name: 'Spicy Mayo Dip', price: 150 },
+      { id: 'cheese-slice', name: 'Extra Cheddar Cheese Slice', price: 120 },
+      { id: 'beef-patty', name: 'Extra Smash Beef Patty', price: 350 },
+    ];
+
+    // --- MULTAN AREAS FOR AUTOCOMPLETE ---
+    const MULTAN_AREAS = [
+      'Shalimar Colony, Model Town',
+      'Model Town Block A / B / C',
+      'Gulgasht Colony',
+      'Bosan Road',
+      'Multan Cantt',
+      'Buch Executive Villas',
+      'DHA Multan',
+      'Wapda Town',
+      'New Multan',
+      'Officers Colony',
+    ];
+
+    // --- REAL TSO (THE SMASH OVEN) MULTAN MENU IN PKR ---
+    const TSO_MENU = [
       {
-        name: "description",
-        content:
-          "Gold-standard smash burgers, deep-dish pizzas and loaded fries in Model Town, Multan. Open till 5 AM — order online or reserve a table.",
+        id: 'b-butter-up',
+        name: 'Butter Up Smash Burger',
+        description: 'Rich double smash beef patty with signature butter sauce, jalapeños, caramelized onions, and sautéed mushrooms.',
+        price: 1199,
+        category: 'Burgers & Sandwiches',
+        image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=900&q=80',
+        isHalal: true,
+        isSignature: true,
+        prepTimeMins: 18,
+        portions: [
+          { id: 'double', name: 'Standard Double Smash', priceDelta: 0 },
+          { id: 'triple', name: 'Monster Triple Smash', priceDelta: 350 },
+        ],
       },
-      { property: "og:title", content: "TSO – The Smash Oven | Multan" },
       {
-        property: "og:description",
-        content: "Smash burgers, deep-dish pizzas and late-night cravings. Order online or reserve a table.",
+        id: 'b-all-american',
+        name: 'All American Double Beef',
+        description: 'Classic double smash beef burger topped with melted American cheese, pickles, and TSO secret American sauce.',
+        price: 1199,
+        category: 'Burgers & Sandwiches',
+        image: 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=900&q=80',
+        isHalal: true,
+        isSignature: true,
+        prepTimeMins: 18,
+        portions: [
+          { id: 'double', name: 'Double Patty', priceDelta: 0 },
+          { id: 'meal', name: 'Make it a Meal (Fries + 345ml Drink)', priceDelta: 399 },
+        ],
       },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
-  component: Home,
-});
+      {
+        id: 'b-tso-sig',
+        name: 'TSO Signature Burger',
+        description: 'House special burger with your choice of juicy smash beef or crispy chicken patty, signature sauce, and crispy onion rings.',
+        price: 750,
+        category: 'Burgers & Sandwiches',
+        image: 'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=900&q=80',
+        isHalal: true,
+        isSignature: true,
+        prepTimeMins: 15,
+        portions: [
+          { id: 'beef', name: 'Smash Beef Patty', priceDelta: 0 },
+          { id: 'chicken', name: 'Crispy Chicken Patty', priceDelta: 0 },
+          { id: 'double-beef', name: 'Double Smash Beef', priceDelta: 350 },
+        ],
+      },
+      {
+        id: 'b-swiss',
+        name: 'Swiss Mushroom Burger',
+        description: 'Savory chicken or beef patty topped with melted Swiss/American cheese and creamy herb mushrooms.',
+        price: 750,
+        category: 'Burgers & Sandwiches',
+        image: 'https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?auto=format&fit=crop&w=900&q=80',
+        isHalal: true,
+        prepTimeMins: 15,
+      },
+      {
+        id: 'b-cheese-buzz',
+        name: 'Cheese Buzz Burger',
+        description: 'Indulgent cheesy delight with chicken or beef patty drenched in warm molten cheese sauce in a toasted brioche bun.',
+        price: 850,
+        category: 'Burgers & Sandwiches',
+        image: 'https://images.unsplash.com/photo-1553979459-d2229ba7433b?auto=format&fit=crop&w=900&q=80',
+        isHalal: true,
+        prepTimeMins: 15,
+      },
+      {
+        id: 'b-mexican-sand',
+        name: 'Mexican Fiery Sandwich',
+        description: 'Loaded grilled sandwich packed with spicy Mexican seasoned chicken, jalapeños, olives, and melted cheddar.',
+        price: 1049,
+        category: 'Burgers & Sandwiches',
+        image: 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=900&q=80',
+        isHalal: true,
+        isSpicy: true,
+        prepTimeMins: 16,
+      },
+      {
+        id: 'b-zingo',
+        name: 'Zingo Crispy Burger',
+        description: 'Golden crunchy zinger fillet topped with signature sauce and cheddar slice in a black-seed bun.',
+        price: 549,
+        category: 'Burgers & Sandwiches',
+        image: 'https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?auto=format&fit=crop&w=900&q=80',
+        isHalal: true,
+        prepTimeMins: 12,
+      },
+      {
+        id: 'p-peri-peri',
+        name: 'Peri Peri Deep Dish Pizza',
+        description: 'Thick-crust deep dish pizza packed with spicy fajita chicken, jalapeño fiery sauce, heavy cheese pull, and half-baked patty.',
+        price: 1799,
+        category: 'Pizza & Pasta',
+        image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=900&q=80',
+        isHalal: true,
+        isSpicy: true,
+        isSignature: true,
+        prepTimeMins: 25,
+        portions: [
+          { id: 'reg', name: 'Regular Deep Dish', priceDelta: 0 },
+          { id: 'lrg', name: 'Large Feast', priceDelta: 600 },
+        ],
+      },
+      {
+        id: 'p-crown-crust',
+        name: 'Royal Crown Crust Pizza',
+        description: 'Signature pizza baked with a royal crown of cheese and chicken kebabs along the crust.',
+        price: 2399,
+        category: 'Pizza & Pasta',
+        image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=900&q=80',
+        isHalal: true,
+        isSignature: true,
+        prepTimeMins: 25,
+      },
+      {
+        id: 'p-extreme-creamy',
+        name: 'Extreme Creamy Pizza',
+        description: 'Rich creamy dip sauce base with chicken tikka chunks, mozzarella, and half-baked burger patty toppings.',
+        price: 1649,
+        category: 'Pizza & Pasta',
+        image: 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=900&q=80',
+        isHalal: true,
+        prepTimeMins: 22,
+      },
+      {
+        id: 'p-crunchy-pasta',
+        name: 'Oven-Baked Crunchy Pasta',
+        description: 'Creamy penne pasta baked under a bubbling mozzarella blanket and topped with crunchy golden tortilla crisps.',
+        price: 1049,
+        category: 'Pizza & Pasta',
+        image: 'https://images.unsplash.com/photo-1621996346565-e3d5d6281298?auto=format&fit=crop&w=900&q=80',
+        isHalal: true,
+        prepTimeMins: 18,
+      },
+      {
+        id: 'm-garlic-butter',
+        name: 'Garlic Butter Chicken Platter',
+        description: 'Sizzling black pepper chicken with onions and mushrooms bathed in rich garlic butter sauce.',
+        price: 1799,
+        category: 'Main Course',
+        image: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=900&q=80',
+        isHalal: true,
+        isGlutenFree: true,
+        prepTimeMins: 20,
+      },
+      {
+        id: 'm-loaded-fries',
+        name: 'Super Loaded Cheese Fries',
+        description: 'Golden fries smothered in molten cheddar, smoky chicken chunks, jalapeños, and TSO house sauces.',
+        price: 799,
+        category: 'Main Course',
+        image: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=900&q=80',
+        isHalal: true,
+        prepTimeMins: 14,
+      },
+      {
+        id: 'a-honey-wings',
+        name: 'Honey Chili Glazed Wings',
+        description: 'Crispy fried jumbo chicken wings tossed in sweet and fiery honey chili glaze.',
+        price: 699,
+        category: 'Appetizers',
+        image: 'https://images.unsplash.com/photo-1527477396000-e27163b481c2?auto=format&fit=crop&w=900&q=80',
+        isHalal: true,
+        isSpicy: true,
+        prepTimeMins: 14,
+      },
+      {
+        id: 'a-spin-roll',
+        name: 'Cheesy Spin Rolls (4 Pcs)',
+        description: 'Tortilla rolls stuffed with spiced chicken, sweet corn, spinach, and oozing melted cheese.',
+        price: 749,
+        category: 'Appetizers',
+        image: 'https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=900&q=80',
+        isHalal: true,
+        prepTimeMins: 12,
+      },
+      {
+        id: 'a-garlic-bread',
+        name: 'Garlic Bread Supreme',
+        description: 'Toasted artisan baguette slices loaded with herb garlic butter, mozzarella, and chili flakes.',
+        price: 400,
+        category: 'Appetizers',
+        image: 'https://images.unsplash.com/photo-1573140247632-f8fd74997d5c?auto=format&fit=crop&w=900&q=80',
+        isHalal: true,
+        isVeg: true,
+        prepTimeMins: 10,
+      },
+      {
+        id: 's-lotus',
+        name: 'Lotus Biscoff Luxury Shake',
+        description: 'Thick artisan shake blended with authentic Belgian Lotus Biscoff spread, vanilla gelato, and crushed biscuit rim.',
+        price: 699,
+        category: 'Shakes & Chillers',
+        image: 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=900&q=80',
+        isHalal: true,
+        isVeg: true,
+        isSignature: true,
+        prepTimeMins: 8,
+      },
+      {
+        id: 's-mint-marg',
+        name: 'Mint Margarita Chiller',
+        description: 'Crushed ice blended with fresh garden mint leaves, zesty lime juice, and sparkling soda.',
+        price: 399,
+        category: 'Shakes & Chillers',
+        image: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=900&q=80',
+        isHalal: true,
+        isVeg: true,
+        isGlutenFree: true,
+        prepTimeMins: 5,
+      },
+      {
+        id: 'd-lava-cake',
+        name: 'Molten Chocolate Lava Cake',
+        description: 'Warm dark chocolate cake with a gooey molten center, served with a scoop of Madagascar vanilla bean ice cream.',
+        price: 500,
+        category: 'Desserts',
+        image: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=900&q=80',
+        isHalal: true,
+        isVeg: true,
+        prepTimeMins: 12,
+      },
+    ];
 
-const REVIEWS = [
-  { name: "Hamza R.", text: "The Butter Up is unreal — juicy, buttery and the mushrooms are perfect. Best burger in Multan, hands down.", rating: 5 },
-  { name: "Ayesha K.", text: "That Peri Peri deep dish cheese pull! Gorgeous interiors and they're open till 5 AM. Our go-to after late nights.", rating: 5 },
-  { name: "Usman T.", text: "Heavy, indulgent and worth every rupee. Lotus shake is dessert in a glass.", rating: 5 },
-];
+    // --- SOUND NOTIFICATION HELPER ---
+    const playAlertChime = (enabled) => {
+      if (!enabled || typeof window === 'undefined') return;
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        const ctx = new AudioCtx();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(587.33, ctx.currentTime);
+        osc.frequency.setValueAtTime(880, ctx.currentTime + 0.14);
+        gain.gain.setValueAtTime(0.18, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.45);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.45);
+      } catch (e) {}
+    };
 
-function Home() {
-  const viewDish = useCart((s) => s.viewDish);
-  const chefSpecial = getDish("peri-peri-deep-dish")!;
+    function App() {
+      const [activeTab, setActiveTab] = useState('home');
+      const [selectedCategory, setSelectedCategory] = useState('All');
+      const [searchQuery, setSearchQuery] = useState('');
+      const [dietFilter, setDietFilter] = useState('ALL');
 
-  return (
-    <>
-      {/* Hero */}
-      <section className="relative flex min-h-[100svh] items-end overflow-hidden">
-        <motion.img
-          src={heroImg}
-          alt="Double smash beef burger with molten cheese under warm golden light"
-          width={1920}
-          height={1088}
-          initial={{ scale: 1.15 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 2.4, ease: [0.22, 1, 0.36, 1] }}
-          className="absolute inset-0 h-full w-full object-cover"
-        />
-        <div className="absolute inset-0 bg-hero-fade" />
-        <div className="absolute inset-0 bg-side-fade" />
-        <div className="relative mx-auto w-full max-w-7xl px-4 pb-28 pt-32 md:px-8 md:pb-24">
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.8 }}
-            className="eyebrow"
-          >
-            Model Town · Multan · Open till 5 AM
-          </motion.p>
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.45, duration: 1, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-6 max-w-3xl text-5xl leading-[0.95] sm:text-7xl md:text-8xl"
-          >
-            Smashed to <em className="text-gold-gradient">perfection.</em>
-            <br />
-            Served in gold.
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7, duration: 0.9 }}
-            className="mt-6 max-w-lg text-base text-muted-foreground md:text-lg"
-          >
-            Double-smashed beef, deep-dish pizzas with an extreme cheese pull, and shakes worth staying up for.
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.9, duration: 0.9 }}
-            className="mt-10 flex flex-col gap-3 sm:flex-row"
-          >
-            <Button variant="gold" size="lg" asChild>
-              <Link to="/menu">
-                Explore Menu & Order Online <ArrowRight />
-              </Link>
-            </Button>
-            <Button variant="glass" size="lg" asChild>
-              <Link to="/reserve">
-                <CalendarDays /> Reserve a table
-              </Link>
-            </Button>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.2, duration: 1 }}
-            className="mt-14 hidden gap-10 text-sm text-muted-foreground md:flex"
-          >
-            <span className="flex items-center gap-2">
-              <Star className="h-4 w-4 fill-gold text-gold" /> Loved across Multan
-            </span>
-            <span className="flex items-center gap-2">
-              <Clock className="h-4 w-4 text-gold" /> 9 AM – 5 AM daily
-            </span>
-            <span className="flex items-center gap-2">
-              <MapPin className="h-4 w-4 text-gold" /> 7 Shalimar Colony
-            </span>
-          </motion.div>
-        </div>
-      </section>
+      // Dish Modal
+      const [activeDish, setActiveDish] = useState(null);
+      const [selectedPortion, setSelectedPortion] = useState({ id: 'std', name: 'Standard', priceDelta: 0 });
+      const [selectedAddons, setSelectedAddons] = useState([]);
+      const [dishNotes, setDishNotes] = useState('');
+      const [dishQty, setDishQty] = useState(1);
 
-      {/* Signature dishes */}
-      <section className="relative ambient-glow py-24">
-        <div className="mx-auto max-w-7xl px-4 md:px-8">
-          <SectionHeading
-            eyebrow="Signature dishes"
-            title="The ones Multan comes back for"
-            sub="Crafted in small batches, smashed on a blazing griddle, plated with intent."
-          />
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {SIGNATURES.slice(0, 8).map((d, i) => (
-              <DishCard key={d.id} dish={d} index={i} />
-            ))}
-          </div>
-          <Reveal className="mt-12 text-center">
-            <Button variant="outlineGold" size="lg" asChild>
-              <Link to="/menu">
-                View the full menu <ArrowRight />
-              </Link>
-            </Button>
-          </Reveal>
-        </div>
-      </section>
+      // Cart & Promo
+      const [cart, setCart] = useState([]);
+      const [isCartOpen, setIsCartOpen] = useState(false);
+      const [promoInput, setPromoInput] = useState('');
+      const [appliedPromo, setAppliedPromo] = useState(null);
+      const [promoMessage, setPromoMessage] = useState('');
 
-      {/* Chef's special */}
-      <section className="py-12">
-        <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 md:grid-cols-2 md:px-8">
-          <Reveal className="relative">
-            <div className="overflow-hidden rounded-3xl border border-hairline shadow-lift">
-              <img src={pizzaImg} alt={chefSpecial.name} loading="lazy" width={1024} height={1024} className="aspect-square w-full object-cover" />
+      // Checkout
+      const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+      const [checkoutStep, setCheckoutStep] = useState(1);
+      const [customerName, setCustomerName] = useState('');
+      const [customerPhone, setCustomerPhone] = useState('');
+      const [customerAddress, setCustomerAddress] = useState('');
+      const [deliveryInstructions, setDeliveryInstructions] = useState('');
+      const [paymentMethod, setPaymentMethod] = useState('COD');
+      const [cardNumber, setCardNumber] = useState('');
+      const [cardExpiry, setCardExpiry] = useState('');
+      const [cardCvc, setCardCvc] = useState('');
+
+      // Live Order Tracking (2.5 Minutes Showcase = 150s)
+      const [activeOrderId, setActiveOrderId] = useState(null);
+      const [orderStep, setOrderStep] = useState(0);
+      const [remainingSeconds, setRemainingSeconds] = useState(150);
+      const [soundEnabled, setSoundEnabled] = useState(true);
+      const [toastAlert, setToastAlert] = useState(null);
+      const [orderSnapshotTotal, setOrderSnapshotTotal] = useState(0);
+      const [orderSnapshotMethod, setOrderSnapshotMethod] = useState('COD');
+
+      // Rider Modals
+      const [isChatOpen, setIsChatOpen] = useState(false);
+      const [isCallModalOpen, setIsCallModalOpen] = useState(false);
+      const [chatMessages, setChatMessages] = useState([
+        { sender: 'rider', text: 'Assalam-o-Alaikum! I am Bilal Ahmed assigned to your TSO order in Model Town.', time: 'Just now' },
+      ]);
+      const [chatDraft, setChatDraft] = useState('');
+
+      // Reservations
+      const [resName, setResName] = useState('');
+      const [resPhone, setResPhone] = useState('');
+      const [resDate, setResDate] = useState('2026-11-18');
+      const [resTime, setResTime] = useState('21:00');
+      const [resGuests, setResGuests] = useState(4);
+      const [resConfirmed, setResConfirmed] = useState(false);
+
+      const triggerToast = (msg) => {
+        setToastAlert(msg);
+        setTimeout(() => setToastAlert(null), 4500);
+      };
+
+      const openDishModal = (dish) => {
+        setActiveDish(dish);
+        const defaultPortion = (dish.portions && dish.portions[0]) || { id: 'std', name: 'Regular Portion', priceDelta: 0 };
+        setSelectedPortion(defaultPortion);
+        setSelectedAddons([]);
+        setDishNotes('');
+        setDishQty(1);
+      };
+
+      const handleAddToCart = () => {
+        if (!activeDish) return;
+        const addonsSum = selectedAddons.reduce((sum, a) => sum + a.price, 0);
+        const unitTotal = activeDish.price + selectedPortion.priceDelta + addonsSum;
+        const newItem = {
+          cartItemId: `${activeDish.id}-${selectedPortion.id}-${Date.now()}`,
+          dish: activeDish,
+          portion: selectedPortion,
+          addons: selectedAddons,
+          quantity: dishQty,
+          notes: dishNotes,
+          unitTotal,
+        };
+        setCart((prev) => [...prev, newItem]);
+        setActiveDish(null);
+        triggerToast(`Added ${dishQty}x ${activeDish.name} to your bag`);
+      };
+
+      const subtotal = useMemo(() => cart.reduce((acc, item) => acc + item.unitTotal * item.quantity, 0), [cart]);
+
+      const discountAmount = useMemo(() => {
+        if (!appliedPromo || subtotal === 0) return 0;
+        if (appliedPromo === 'TSO10') return Math.round(subtotal * 0.1);
+        if (appliedPromo === 'SMASH200') return Math.min(200, subtotal);
+        return 0;
+      }, [appliedPromo, subtotal]);
+
+      const taxableAmount = Math.max(0, subtotal - discountAmount);
+      const taxAmount = Math.round(taxableAmount * 0.16);
+      const deliveryFee = subtotal > 0 ? 150 : 0;
+      const grandTotal = taxableAmount + taxAmount + deliveryFee;
+
+      const estimatedPrepTime = useMemo(() => {
+        if (cart.length === 0) return 0;
+        const maxPrep = Math.max(...cart.map((i) => i.dish.prepTimeMins));
+        return maxPrep + 10;
+      }, [cart]);
+
+      const handleApplyPromo = () => {
+        const code = promoInput.trim().toUpperCase();
+        if (code === 'TSO10') {
+          setAppliedPromo('TSO10');
+          setPromoMessage('10% discount applied!');
+        } else if (code === 'SMASH200') {
+          if (subtotal < 1000) {
+            setPromoMessage('SMASH200 requires a minimum order of Rs. 1,000.');
+            return;
+          }
+          setAppliedPromo('SMASH200');
+          setPromoMessage('Rs. 200 flat discount applied!');
+        } else {
+          setAppliedPromo(null);
+          setPromoMessage('Invalid code. Try TSO10 or SMASH200.');
+        }
+      };
+
+      const filteredDishes = useMemo(() => {
+        return TSO_MENU.filter((d) => {
+          const matchesCat = selectedCategory === 'All' || d.category === selectedCategory;
+          const matchesSearch =
+            d.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            d.description.toLowerCase().includes(searchQuery.toLowerCase());
+          const matchesDiet =
+            dietFilter === 'ALL' ||
+            (dietFilter === 'HALAL' && d.isHalal) ||
+            (dietFilter === 'VEG' && d.isVeg) ||
+            (dietFilter === 'GF' && d.isGlutenFree) ||
+            (dietFilter === 'SPICY' && d.isSpicy);
+          return matchesCat && matchesSearch && matchesDiet;
+        });
+      }, [selectedCategory, searchQuery, dietFilter]);
+
+      const handleCompleteOrder = (e) => {
+        e.preventDefault();
+        const generatedId = `TSO-${Math.floor(10000 + Math.random() * 90000)}`;
+        setActiveOrderId(generatedId);
+        setOrderSnapshotTotal(grandTotal);
+        setOrderSnapshotMethod(paymentMethod);
+        setOrderStep(0);
+        setRemainingSeconds(150);
+        setIsCheckoutOpen(false);
+        setIsCartOpen(false);
+        setCart([]);
+        setAppliedPromo(null);
+        setActiveTab('tracking');
+        playAlertChime(soundEnabled);
+        triggerToast(`Order ${generatedId} Confirmed! Sending to TSO Model Town Kitchen.`);
+      };
+
+      useEffect(() => {
+        if (!activeOrderId || remainingSeconds <= 0) return;
+
+        const timer = setInterval(() => {
+          setRemainingSeconds((prev) => {
+            const next = prev - 1;
+            if (next === 115) {
+              setOrderStep(1);
+              playAlertChime(soundEnabled);
+              triggerToast('🔥 TSO Kitchen is now smashing & grilling your order!');
+            } else if (next === 65) {
+              setOrderStep(2);
+              playAlertChime(soundEnabled);
+              triggerToast('🛵 Rider Bilal Ahmed picked up your order from Shalimar Colony!');
+              setChatMessages((msgs) => [
+                ...msgs,
+                { sender: 'rider', text: 'I have picked up your hot food from TSO! On my way via Model Town link road.', time: 'Just now' },
+              ]);
+            } else if (next === 0) {
+              setOrderStep(3);
+              playAlertChime(soundEnabled);
+              triggerToast('🎉 Order Delivered! Enjoy your meal from The Smash Oven.');
+            }
+            return Math.max(0, next);
+          });
+        }, 1000);
+
+        return () => clearInterval(timer);
+      }, [activeOrderId, remainingSeconds, soundEnabled]);
+
+      const riderProgressPercent = useMemo(() => {
+        if (orderStep === 0) return 8;
+        if (orderStep === 1) return 22;
+        if (orderStep === 3) return 100;
+        const elapsedInTransit = 65 - remainingSeconds;
+        return Math.min(98, Math.max(25, Math.round(25 + (elapsedInTransit / 65) * 73)));
+      }, [orderStep, remainingSeconds]);
+
+      const sendChatMessage = (e) => {
+        e.preventDefault();
+        if (!chatDraft.trim()) return;
+        const userMsg = chatDraft.trim();
+        setChatMessages((prev) => [...prev, { sender: 'user', text: userMsg, time: 'Now' }]);
+        setChatDraft('');
+        setTimeout(() => {
+          setChatMessages((prev) => [
+            ...prev,
+            { sender: 'rider', text: 'Got it! I will follow your instructions and reach right on time.', time: 'Now' },
+          ]);
+        }, 1800);
+      };
+
+      return (
+        <div className="min-h-screen bg-[#0B0B0C] text-[#F5F5F7] font-sans pb-20 md:pb-0">
+          {/* POP-UP TOAST NOTIFICATION */}
+          {toastAlert && (
+            <div className="fixed top-24 right-4 z-50 max-w-sm bg-[#161618]/95 border border-[#D4AF37] text-white px-5 py-4 rounded-2xl shadow-2xl flex items-center gap-3 animate-bounce">
+              <Sparkles className="w-5 h-5 text-[#D4AF37] shrink-0" />
+              <p className="text-xs sm:text-sm font-medium">{toastAlert}</p>
             </div>
-            <div className="absolute -bottom-6 -right-2 rounded-2xl glass px-5 py-4 md:-right-6">
-              <p className="eyebrow">Chef's special</p>
-              <p className="mt-1 font-display text-2xl">{formatRs(chefSpecial.price)}</p>
-            </div>
-          </Reveal>
-          <Reveal delay={0.15}>
-            <p className="eyebrow">From the Chef's Table</p>
-            <h2 className="mt-4 text-4xl md:text-6xl">{chefSpecial.name}</h2>
-            <p className="mt-6 text-lg leading-relaxed text-muted-foreground">{chefSpecial.description}</p>
-            <p className="mt-4 text-sm text-muted-foreground">
-              Baked in a cast-iron pan until the crust turns deep gold and the cheese stretches for days.
-            </p>
-            <Button variant="gold" size="lg" className="mt-8" onClick={() => viewDish(chefSpecial.id)}>
-              Order the special
-            </Button>
-          </Reveal>
-        </div>
-      </section>
+          )}
 
-      {/* Ambience */}
-      <section className="relative mt-24 overflow-hidden">
-        <img src={ambienceImg} alt="TSO dining room with brass pendant lights and leather booths" loading="lazy" width={1600} height={1008} className="h-[70vh] w-full object-cover" />
-        <div className="absolute inset-0 bg-hero-fade" />
-        <div className="absolute inset-0 flex items-center">
-          <div className="mx-auto w-full max-w-7xl px-4 md:px-8">
-            <Reveal className="max-w-lg rounded-3xl glass p-8 md:p-10">
-              <p className="eyebrow">Dine with us</p>
-              <h2 className="mt-4 text-4xl md:text-5xl">Late nights, low light, big flavour.</h2>
-              <p className="mt-4 text-muted-foreground">
-                Brass, marble and leather booths — the perfect backdrop for birthdays, meetups and 3 AM cravings.
-              </p>
-              <Button variant="gold" className="mt-6" asChild>
-                <Link to="/reserve">
-                  <CalendarDays /> Book your table
-                </Link>
-              </Button>
-            </Reveal>
-          </div>
-        </div>
-      </section>
-
-      {/* Reviews */}
-      <section className="py-24">
-        <div className="mx-auto max-w-7xl px-4 md:px-8">
-          <SectionHeading eyebrow="Guest notes" title="What our guests say" />
-          <div className="grid gap-6 md:grid-cols-3">
-            {REVIEWS.map((r, i) => (
-              <Reveal key={r.name} delay={i * 0.1} className="rounded-3xl border border-hairline bg-card p-8">
-                <Quote className="h-6 w-6 text-gold" />
-                <p className="mt-5 font-display text-xl leading-snug">“{r.text}”</p>
-                <div className="mt-6 flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">{r.name}</span>
-                  <span className="flex gap-0.5">
-                    {Array.from({ length: r.rating }).map((_, k) => (
-                      <Star key={k} className="h-3.5 w-3.5 fill-gold text-gold" />
-                    ))}
+          {/* TOP NAVBAR */}
+          <header className="sticky top-0 z-40 bg-[#0B0B0C]/85 backdrop-blur-xl border-b border-[#D4AF37]/20">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
+              <button onClick={() => setActiveTab('home')} className="flex items-center gap-3 text-left group">
+                <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#D4AF37] to-[#9A7B1C] flex items-center justify-center text-black font-black text-lg shadow-lg">
+                  TSO
+                </div>
+                <div>
+                  <span className="block font-serif text-lg sm:text-xl font-bold tracking-wider text-white group-hover:text-[#D4AF37] transition-colors">
+                    THE SMASH OVEN
+                  </span>
+                  <span className="block text-[10px] uppercase tracking-widest text-[#D4AF37]">
+                    Model Town • Multan
                   </span>
                 </div>
-              </Reveal>
-            ))}
+              </button>
+
+              <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
+                <button onClick={() => setActiveTab('home')} className={`transition-colors ${activeTab === 'home' ? 'text-[#D4AF37]' : 'text-gray-300 hover:text-white'}`}>
+                  Home
+                </button>
+                <button onClick={() => setActiveTab('menu')} className={`transition-colors ${activeTab === 'menu' ? 'text-[#D4AF37]' : 'text-gray-300 hover:text-white'}`}>
+                  Explore Menu
+                </button>
+                <button onClick={() => setActiveTab('reservations')} className={`transition-colors ${activeTab === 'reservations' ? 'text-[#D4AF37]' : 'text-gray-300 hover:text-white'}`}>
+                  Reserve a Table
+                </button>
+                <button onClick={() => setActiveTab('tracking')} className={`flex items-center gap-1.5 transition-colors ${activeTab === 'tracking' ? 'text-[#D4AF37]' : 'text-gray-300 hover:text-white'}`}>
+                  <Bike className="w-4 h-4 text-[#D4AF37]" />
+                  Live Tracking
+                  {activeOrderId && <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />}
+                </button>
+              </nav>
+
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => setSoundEnabled(!soundEnabled)}
+                  title="Toggle Status Sound Alerts"
+                  className="p-2.5 rounded-full border border-white/10 text-gray-300 hover:border-[#D4AF37]/50 hover:text-[#D4AF37] transition-all"
+                >
+                  {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+                </button>
+
+                <button
+                  onClick={() => setIsCartOpen(true)}
+                  className="relative flex items-center gap-2.5 bg-[#D4AF37] hover:bg-[#F3E5AB] text-black font-semibold px-4 py-2.5 rounded-full text-sm transition-all shadow-lg"
+                >
+                  <ShoppingBag className="w-4 h-4" />
+                  <span className="hidden sm:inline">Order Bag</span>
+                  <span className="bg-black text-[#D4AF37] text-xs font-bold px-2 py-0.5 rounded-full">
+                    {cart.reduce((s, i) => s + i.quantity, 0)}
+                  </span>
+                </button>
+              </div>
+            </div>
+          </header>
+
+          {/* ==================== HOME VIEW ==================== */}
+          {activeTab === 'home' && (
+            <div className="animate-fade-up">
+              <section className="relative min-h-[82vh] flex items-center overflow-hidden border-b border-[#D4AF37]/20">
+                <div className="absolute inset-0 z-0">
+                  <img
+                    src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=1800&q=85"
+                    alt="TSO Smash Burger"
+                    className="w-full h-full object-cover opacity-35 scale-105 transition-transform duration-1000"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#0B0B0C] via-[#0B0B0C]/85 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0B0B0C] via-transparent to-[#0B0B0C]/60" />
+                </div>
+
+                <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-20 grid lg:grid-cols-12 gap-12 items-center">
+                  <div className="lg:col-span-7 space-y-6">
+                    <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#D4AF37]/15 border border-[#D4AF37]/40 text-[#F3E5AB] text-xs font-medium tracking-wide">
+                      <Sparkles className="w-3.5 h-3.5 text-[#D4AF37]" />
+                      OPEN DAILY 9:00 AM – 5:00 AM • MODEL TOWN, MULTAN
+                    </div>
+                    <h1 className="font-serif text-4xl sm:text-6xl lg:text-7xl font-bold text-white leading-tight">
+                      Multan’s Ultimate <span className="text-[#D4AF37]">Smash Burgers</span> & Deep Dish.
+                    </h1>
+                    <p className="text-gray-300 text-base sm:text-lg max-w-2xl leading-relaxed">
+                      Crafted with 100% Halal prime Sear-Smashed beef, artisan brioche buns, and molten deep-dish cheese pulls. Order directly from 7 Shalimar Colony, Model Town with live GPS rider tracking.
+                    </p>
+                    <div className="flex flex-wrap gap-4 pt-2">
+                      <button
+                        onClick={() => setActiveTab('menu')}
+                        className="px-7 py-4 rounded-full bg-[#D4AF37] hover:bg-[#F3E5AB] text-black font-bold text-sm sm:text-base transition-all shadow-xl flex items-center gap-2"
+                      >
+                        Explore Menu & Order Online
+                        <ChevronRight className="w-5 h-5" />
+                      </button>
+                      <button
+                        onClick={() => setActiveTab('reservations')}
+                        className="px-7 py-4 rounded-full bg-white/5 hover:bg-white/15 text-white border border-[#D4AF37]/40 font-semibold text-sm sm:text-base transition-all"
+                      >
+                        Reserve a Table
+                      </button>
+                    </div>
+
+                    <div className="grid grid-cols-3 gap-4 pt-6 max-w-lg border-t border-white/10">
+                      <div>
+                        <p className="text-[#D4AF37] font-serif text-2xl font-bold">5:00 AM</p>
+                        <p className="text-xs text-gray-400">Late-Night Cravings</p>
+                      </div>
+                      <div>
+                        <p className="text-[#D4AF37] font-serif text-2xl font-bold">Rs. 150</p>
+                        <p className="text-xs text-gray-400">Flat Multan Delivery</p>
+                      </div>
+                      <div>
+                        <p className="text-[#D4AF37] font-serif text-2xl font-bold">100% Halal</p>
+                        <p className="text-xs text-gray-400">Fresh Daily Grind</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              {/* Signature Dishes */}
+              <section className="max-w-7xl mx-auto px-4 sm:px-6 py-16">
+                <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10">
+                  <div>
+                    <span className="text-xs uppercase tracking-widest text-[#D4AF37] font-semibold">
+                      Most Ordered in Multan
+                    </span>
+                    <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white mt-1">
+                      TSO Signature Creations
+                    </h2>
+                  </div>
+                  <button
+                    onClick={() => setActiveTab('menu')}
+                    className="text-sm text-[#D4AF37] hover:underline mt-3 sm:mt-0 flex items-center gap-1"
+                  >
+                    View Full Menu <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {TSO_MENU.filter((d) => d.isSignature).slice(0, 4).map((dish) => (
+                    <div
+                      key={dish.id}
+                      onClick={() => openDishModal(dish)}
+                      className="group cursor-pointer bg-[#141416] border border-white/10 hover:border-[#D4AF37]/60 rounded-2xl overflow-hidden transition-all duration-300 flex flex-col justify-between shadow-lg"
+                    >
+                      <div className="relative h-48 overflow-hidden">
+                        <img
+                          src={dish.image}
+                          alt={dish.name}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                        <span className="absolute top-3 left-3 bg-black/80 backdrop-blur-md text-[#D4AF37] border border-[#D4AF37]/40 text-[10px] font-bold uppercase px-2.5 py-1 rounded-full">
+                          Signature
+                        </span>
+                      </div>
+                      <div className="p-5 flex-1 flex flex-col justify-between">
+                        <div>
+                          <h3 className="font-serif text-lg font-bold text-white group-hover:text-[#D4AF37] transition-colors">
+                            {dish.name}
+                          </h3>
+                          <p className="text-xs text-gray-400 mt-1 line-clamp-2">{dish.description}</p>
+                        </div>
+                        <div className="flex items-center justify-between pt-4 mt-4 border-t border-white/10">
+                          <span className="text-white font-bold">Rs. {dish.price.toLocaleString()}</span>
+                          <span className="text-xs bg-[#D4AF37]/15 text-[#D4AF37] border border-[#D4AF37]/30 px-3 py-1 rounded-full font-semibold">
+                            Customize +
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              {/* Chef's Special */}
+              <section className="bg-[#121215] border-y border-[#D4AF37]/20 py-16">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 grid md:grid-cols-2 gap-10 items-center">
+                  <div className="relative rounded-3xl overflow-hidden border border-[#D4AF37]/30 shadow-2xl">
+                    <img
+                      src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=1000&q=80"
+                      alt="Peri Peri Deep Dish Pizza"
+                      className="w-full h-80 sm:h-96 object-cover"
+                    />
+                    <div className="absolute bottom-4 left-4 bg-black/85 backdrop-blur-md px-4 py-2 rounded-xl border border-[#D4AF37]/40">
+                      <p className="text-xs text-[#D4AF37] font-bold">CHEF’S LATE-NIGHT SPECIAL</p>
+                      <p className="text-sm text-white font-serif">Chicago-Style Peri Peri Deep Dish</p>
+                    </div>
+                  </div>
+                  <div className="space-y-5">
+                    <div className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-[#D4AF37]">
+                      <Award className="w-4 h-4" /> Unmatched Cheese Pull in Model Town
+                    </div>
+                    <h2 className="font-serif text-3xl sm:text-5xl font-bold text-white">
+                      The Famous Peri Peri Deep Dish & Butter Up Smash
+                    </h2>
+                    <p className="text-gray-300 text-sm sm:text-base leading-relaxed">
+                      Baked in heavy cast-iron pans with double-layered mozzarella, spicy peri-peri chicken chunks, and topped with our signature half-baked smash patties. Use code <strong className="text-[#D4AF37]">TSO10</strong> for 10% off or <strong className="text-[#D4AF37]">SMASH200</strong> for Rs. 200 off orders above Rs. 1,000.
+                    </p>
+                    <button
+                      onClick={() => {
+                        const special = TSO_MENU.find((i) => i.id === 'p-peri-peri');
+                        if (special) openDishModal(special);
+                      }}
+                      className="px-6 py-3.5 bg-[#D4AF37] text-black font-bold rounded-full text-sm hover:bg-[#F3E5AB] transition-all"
+                    >
+                      Order Chef’s Special — Rs. 1,799
+                    </button>
+                  </div>
+                </div>
+              </section>
+
+              {/* Dining Room & Guest Reviews */}
+              <section className="max-w-7xl mx-auto px-4 sm:px-6 py-16 space-y-16">
+                <div className="grid md:grid-cols-2 gap-8 items-center">
+                  <div className="space-y-4">
+                    <span className="text-xs uppercase tracking-widest text-[#D4AF37]">The Ambience</span>
+                    <h3 className="font-serif text-3xl font-bold text-white">
+                      Modern Aesthetic Dining at Shalimar Colony
+                    </h3>
+                    <p className="text-sm text-gray-300 leading-relaxed">
+                      Whether it’s a family dinner, birthday gathering, or a 3:00 AM burger run with friends, TSO offers climate-controlled indoor lounges and outdoor seating with ample parking in Model Town.
+                    </p>
+                    <div className="flex flex-wrap gap-3 pt-2 text-xs text-gray-300">
+                      <span className="px-3 py-1.5 rounded-full bg-white/5 border border-white/10">✓ Indoor & Outdoor Seating</span>
+                      <span className="px-3 py-1.5 rounded-full bg-white/5 border border-white/10">✓ Late Night till 5 AM</span>
+                      <span className="px-3 py-1.5 rounded-full bg-white/5 border border-white/10">✓ Free Parking</span>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <img
+                      src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=600&q=80"
+                      alt="TSO Dining Room"
+                      className="rounded-2xl h-48 w-full object-cover border border-white/10"
+                    />
+                    <img
+                      src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80"
+                      alt="TSO Vibe"
+                      className="rounded-2xl h-48 w-full object-cover border border-white/10"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="font-serif text-2xl sm:text-3xl font-bold text-white text-center mb-8">
+                    What Multan Foodies Are Saying
+                  </h3>
+                  <div className="grid md:grid-cols-3 gap-6">
+                    {[
+                      {
+                        name: 'Hamza Tariq (Model Town)',
+                        review: 'The Butter Up Beef Burger is easily the juiciest smash burger in Multan. Staying open until 5 AM makes it unbeatable for late-night cravings.',
+                        dish: 'Butter Up Smash Burger',
+                      },
+                      {
+                        name: 'Ayesha Gilani (Gulgasht)',
+                        review: 'Ordered the Peri Peri Deep Dish Pizza and Lotus Shake. The cheese pull was unreal and delivery reached Gulgasht piping hot in 25 minutes!',
+                        dish: 'Peri Peri Deep Dish Pizza',
+                      },
+                      {
+                        name: 'Zain Raza (DHA Multan)',
+                        review: 'Crown Crust Pizza and Honey Chili Wings are 10/10. Worth every rupee for a proper cheat meal with friends.',
+                        dish: 'Royal Crown Crust Pizza',
+                      },
+                    ].map((r, i) => (
+                      <div key={i} className="bg-[#141416] p-6 rounded-2xl border border-white/10 space-y-3">
+                        <div className="flex text-[#D4AF37]">
+                          {[...Array(5)].map((_, idx) => (
+                            <Star key={idx} className="w-4 h-4 fill-[#D4AF37]" />
+                          ))}
+                        </div>
+                        <p className="text-sm text-gray-300 italic">"{r.review}"</p>
+                        <div className="pt-2 border-t border-white/5 flex justify-between items-center text-xs">
+                          <span className="font-bold text-white">{r.name}</span>
+                          <span className="text-[#D4AF37]">{r.dish}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </section>
+            </div>
+          )}
+
+          {/* ==================== MENU VIEW ==================== */}
+          {activeTab === 'menu' && (
+            <section className="max-w-7xl mx-auto px-4 sm:px-6 py-10 animate-fade-up">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-8 border-b border-white/10">
+                <div>
+                  <span className="text-xs uppercase tracking-widest text-[#D4AF37]">Official TSO Multan Menu</span>
+                  <h1 className="font-serif text-3xl sm:text-4xl font-bold text-white mt-1">
+                    Explore & Customize Your Meal
+                  </h1>
+                </div>
+
+                <div className="relative w-full md:w-80">
+                  <Search className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search burgers, deep dish, shakes..."
+                    className="w-full bg-[#161618] border border-white/15 focus:border-[#D4AF37] rounded-full pl-10 pr-4 py-2.5 text-sm text-white outline-none"
+                  />
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 overflow-x-auto py-4 no-scrollbar">
+                {['All', 'Burgers & Sandwiches', 'Pizza & Pasta', 'Main Course', 'Appetizers', 'Shakes & Chillers', 'Desserts'].map(
+                  (cat) => (
+                    <button
+                      key={cat}
+                      onClick={() => setSelectedCategory(cat)}
+                      className={`px-4 py-2 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap transition-all ${
+                        selectedCategory === cat
+                          ? 'bg-[#D4AF37] text-black shadow-md'
+                          : 'bg-[#161618] text-gray-300 hover:bg-white/10 border border-white/10'
+                      }`}
+                    >
+                      {cat}
+                    </button>
+                  )
+                )}
+              </div>
+
+              <div className="flex flex-wrap items-center gap-2 pb-6">
+                <span className="text-xs text-gray-400 mr-2">Dietary Filters:</span>
+                {[
+                  { key: 'ALL', label: 'All Items' },
+                  { key: 'HALAL', label: '100% Halal' },
+                  { key: 'SPICY', label: '🌶️ Spicy' },
+                  { key: 'VEG', label: '🌱 Vegetarian' },
+                  { key: 'GF', label: '🌾 Gluten-Free' },
+                ].map((f) => (
+                  <button
+                    key={f.key}
+                    onClick={() => setDietFilter(f.key)}
+                    className={`px-3 py-1 rounded-lg text-xs font-medium border transition-all ${
+                      dietFilter === f.key
+                        ? 'border-[#D4AF37] bg-[#D4AF37]/20 text-[#F3E5AB]'
+                        : 'border-white/10 bg-white/5 text-gray-400 hover:text-white'
+                    }`}
+                  >
+                    {f.label}
+                  </button>
+                ))}
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredDishes.map((dish) => (
+                  <div
+                    key={dish.id}
+                    onClick={() => openDishModal(dish)}
+                    className="bg-[#141416] border border-white/10 hover:border-[#D4AF37]/60 rounded-2xl overflow-hidden cursor-pointer transition-all flex flex-col justify-between group"
+                  >
+                    <div className="relative h-52 overflow-hidden">
+                      <img
+                        src={dish.image}
+                        alt={dish.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                      <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
+                        <span className="bg-emerald-950/90 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2 py-0.5 rounded-md">
+                          HALAL
+                        </span>
+                        {dish.isSpicy && (
+                          <span className="bg-red-950/90 text-red-300 border border-red-500/30 text-[10px] font-bold px-2 py-0.5 rounded-md flex items-center gap-0.5">
+                            <Flame className="w-3 h-3" /> SPICY
+                          </span>
+                        )}
+                        {dish.isVeg && (
+                          <span className="bg-green-950/90 text-green-300 border border-green-500/30 text-[10px] font-bold px-2 py-0.5 rounded-md">
+                            VEG
+                          </span>
+                        )}
+                        {dish.isGlutenFree && (
+                          <span className="bg-amber-950/90 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-0.5 rounded-md">
+                            GF
+                          </span>
+                        )}
+                      </div>
+                      <span className="absolute bottom-3 right-3 bg-black/80 text-gray-200 text-[11px] px-2.5 py-1 rounded-full flex items-center gap-1">
+                        <Clock className="w-3 h-3 text-[#D4AF37]" /> {dish.prepTimeMins}m
+                      </span>
+                    </div>
+
+                    <div className="p-5 flex-1 flex flex-col justify-between">
+                      <div>
+                        <span className="text-[11px] text-[#D4AF37] uppercase tracking-wider font-semibold">
+                          {dish.category}
+                        </span>
+                        <h3 className="font-serif text-xl font-bold text-white mt-0.5 group-hover:text-[#D4AF37] transition-colors">
+                          {dish.name}
+                        </h3>
+                        <p className="text-xs text-gray-400 mt-1.5 line-clamp-2">{dish.description}</p>
+                      </div>
+
+                      <div className="flex items-center justify-between pt-4 mt-4 border-t border-white/10">
+                        <div>
+                          <span className="text-xs text-gray-400 block">Price</span>
+                          <span className="text-lg font-bold text-white">Rs. {dish.price.toLocaleString()}</span>
+                        </div>
+                        <button className="px-4 py-2 rounded-full bg-[#D4AF37] text-black font-bold text-xs group-hover:bg-[#F3E5AB] transition-all">
+                          Customize +
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* ==================== LIVE TRACKING VIEW ==================== */}
+          {activeTab === 'tracking' && (
+            <section className="max-w-4xl mx-auto px-4 sm:px-6 py-10 animate-fade-up">
+              {!activeOrderId ? (
+                <div className="bg-[#141416] border border-white/10 rounded-3xl p-10 text-center space-y-5">
+                  <Bike className="w-14 h-14 text-[#D4AF37] mx-auto" />
+                  <h2 className="font-serif text-3xl font-bold text-white">No Active Order Right Now</h2>
+                  <p className="text-sm text-gray-400 max-w-md mx-auto">
+                    Add your favorite Smash Burgers or Deep Dish Pizza to the bag and complete checkout to test our live 2.5-minute rider tracking showcase!
+                  </p>
+                  <button
+                    onClick={() => setActiveTab('menu')}
+                    className="px-7 py-3.5 bg-[#D4AF37] text-black font-bold rounded-full text-sm"
+                  >
+                    Browse Menu & Place an Order
+                  </button>
+                </div>
+              ) : (
+                <div className="bg-[#141416] border border-[#D4AF37]/30 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-8">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-6">
+                    <div>
+                      <span className="text-xs uppercase tracking-widest text-[#D4AF37] font-mono">
+                        LIVE MULTAN GPS TRACKER • ORDER #{activeOrderId}
+                      </span>
+                      <h2 className="font-serif text-2xl sm:text-3xl font-bold text-white mt-1">
+                        {orderStep === 0 && 'Order Confirmed by TSO Model Town'}
+                        {orderStep === 1 && 'Chefs are Smashing & Preparing Your Food'}
+                        {orderStep === 2 && 'Rider Bilal Ahmed is On The Way!'}
+                        {orderStep === 3 && 'Order Delivered — Bon Appétit!'}
+                      </h2>
+                    </div>
+                    <div className="bg-[#1C1C20] border border-[#D4AF37]/40 px-5 py-3 rounded-2xl text-center shrink-0">
+                      <span className="text-[11px] text-gray-400 uppercase block">Showcase Countdown</span>
+                      <span className="font-mono text-2xl font-bold text-[#D4AF37]">
+                        {Math.floor(remainingSeconds / 60)}:{String(remainingSeconds % 60).padStart(2, '0')}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-4 gap-2 sm:gap-4">
+                    {[
+                      { step: 0, title: 'Confirmed', sub: 'Received at TSO' },
+                      { step: 1, title: 'Preparing', sub: 'Grilling & Packing' },
+                      { step: 2, title: 'On the Way', sub: 'Bilal is riding' },
+                      { step: 3, title: 'Delivered', sub: 'Arrived at door' },
+                    ].map((m) => {
+                      const active = orderStep >= m.step;
+                      return (
+                        <div
+                          key={m.step}
+                          className={`p-3 rounded-2xl border text-center transition-all ${
+                            active
+                              ? 'bg-[#D4AF37]/15 border-[#D4AF37] text-white'
+                              : 'bg-white/5 border-white/10 text-gray-500'
+                          }`}
+                        >
+                          <CheckCircle2 className={`w-6 h-6 mx-auto mb-1.5 ${active ? 'text-[#D4AF37]' : 'text-gray-600'}`} />
+                          <p className="text-xs sm:text-sm font-bold">{m.title}</p>
+                          <p className="text-[10px] text-gray-400 hidden sm:block">{m.sub}</p>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* Interactive Map */}
+                  <div className="relative h-64 bg-[#0E1318] rounded-2xl border border-white/10 overflow-hidden p-6 flex flex-col justify-between">
+                    <svg className="absolute inset-0 w-full h-full opacity-20" xmlns="http://www.w3.org/2000/svg">
+                      <defs>
+                        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#D4AF37" strokeWidth="0.6" />
+                        </pattern>
+                      </defs>
+                      <rect width="100%" height="100%" fill="url(#grid)" />
+                    </svg>
+
+                    <div className="relative z-10 flex justify-between items-center text-xs">
+                      <span className="bg-black/80 px-3 py-1.5 rounded-full border border-[#D4AF37]/40 text-[#F3E5AB]">
+                        📍 Origin: TSO (7 Shalimar Colony, Model Town)
+                      </span>
+                      <span className="bg-black/80 px-3 py-1.5 rounded-full border border-emerald-500/40 text-emerald-300">
+                        🏠 Destination: {customerAddress || 'Model Town, Multan'}
+                      </span>
+                    </div>
+
+                    <div className="relative z-10 my-auto py-8">
+                      <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-gradient-to-r from-[#D4AF37] to-emerald-400 transition-all duration-700"
+                          style={{ width: `${riderProgressPercent}%` }}
+                        />
+                      </div>
+
+                      <div
+                        className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 transition-all duration-700"
+                        style={{ left: `${riderProgressPercent}%` }}
+                      >
+                        <div className="bg-[#D4AF37] text-black p-2.5 rounded-full shadow-2xl ring-4 ring-[#D4AF37]/30 flex items-center gap-1">
+                          <Bike className="w-5 h-5" />
+                        </div>
+                        <span className="block text-[10px] font-bold bg-black/90 text-[#D4AF37] px-2 py-0.5 rounded mt-1 whitespace-nowrap">
+                          Bilal Ahmed ({riderProgressPercent}%)
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="relative z-10 flex justify-between items-center text-[11px] text-gray-400">
+                      <span>Speed: ~38 km/h • Honda CG 125 (MN-4821)</span>
+                      <span>Hot-Bag Temperature: 68°C</span>
+                    </div>
+                  </div>
+
+                  {/* Rider Card */}
+                  <div className="bg-[#1B1B1F] border border-white/10 rounded-2xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div className="flex items-center gap-4">
+                      <div className="w-14 h-14 rounded-2xl bg-[#D4AF37]/20 border border-[#D4AF37] flex items-center justify-center text-[#D4AF37] font-serif font-bold text-xl">
+                        BA
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <h4 className="font-bold text-white text-base">Bilal Ahmed</h4>
+                          <span className="text-xs bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full">
+                            4.9 ★ TSO Fleet
+                          </span>
+                        </div>
+                        <p className="text-xs text-gray-400 mt-0.5">
+                          Verified TSO Delivery Partner • Multan Branch
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-3 w-full sm:w-auto">
+                      <button
+                        onClick={() => setIsCallModalOpen(true)}
+                        className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-semibold transition-all"
+                      >
+                        <Phone className="w-4 h-4 text-[#D4AF37]" /> Call Bilal
+                      </button>
+                      <button
+                        onClick={() => setIsChatOpen(true)}
+                        className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#D4AF37] hover:bg-[#F3E5AB] text-black text-xs font-bold transition-all"
+                      >
+                        <MessageSquare className="w-4 h-4" /> Live Chat
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pt-4 border-t border-white/10 text-sm">
+                    <div>
+                      <span className="text-gray-400">Payment Mode: </span>
+                      <strong className="text-white">
+                        {orderSnapshotMethod === 'COD'
+                          ? `Cash on Delivery (Please keep Rs. ${orderSnapshotTotal.toLocaleString()} ready)`
+                          : `Paid Online (${orderSnapshotMethod}) — Rs. 0 to pay rider`}
+                      </strong>
+                    </div>
+                    <div className="text-lg font-bold text-[#D4AF37]">
+                      Total: Rs. {orderSnapshotTotal.toLocaleString()}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </section>
+          )}
+
+          {/* ==================== RESERVATIONS VIEW ==================== */}
+          {activeTab === 'reservations' && (
+            <section className="max-w-3xl mx-auto px-4 sm:px-6 py-12 animate-fade-up">
+              <div className="bg-[#141416] border border-[#D4AF37]/30 rounded-3xl p-6 sm:p-10 shadow-2xl">
+                <span className="text-xs uppercase tracking-widest text-[#D4AF37]">VIP Table Booking</span>
+                <h1 className="font-serif text-3xl sm:text-4xl font-bold text-white mt-1 mb-2">
+                  Reserve Your Table at TSO Multan
+                </h1>
+                <p className="text-xs sm:text-sm text-gray-400 mb-8">
+                  7, Shalimar Colony, Model Town, Multan • Open 9:00 AM to 5:00 AM Daily.
+                </p>
+
+                {resConfirmed ? (
+                  <div className="p-6 bg-emerald-950/40 border border-emerald-500/40 rounded-2xl text-center space-y-4">
+                    <CheckCircle2 className="w-12 h-12 text-emerald-400 mx-auto" />
+                    <h3 className="font-serif text-2xl font-bold text-white">Table Reserved!</h3>
+                    <p className="text-sm text-gray-300">
+                      We look forward to hosting <strong>{resName}</strong> ({resGuests} Guests) on{' '}
+                      <strong>{resDate}</strong> at <strong>{resTime}</strong> at The Smash Oven, Model Town.
+                    </p>
+                    <button
+                      onClick={() => setResConfirmed(false)}
+                      className="px-6 py-2.5 bg-[#D4AF37] text-black font-bold rounded-full text-xs"
+                    >
+                      Modify Reservation
+                    </button>
+                  </div>
+                ) : (
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      setResConfirmed(true);
+                      triggerToast('Table reservation confirmed at TSO Model Town!');
+                    }}
+                    className="space-y-5"
+                  >
+                    <div className="grid sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-xs text-gray-400 block mb-1.5">Guest Full Name *</label>
+                        <input
+                          required
+                          value={resName}
+                          onChange={(e) => setResName(e.target.value)}
+                          placeholder="e.g. Shahmir Qureshi"
+                          className="w-full bg-[#1C1C20] border border-white/15 rounded-xl p-3 text-sm text-white focus:border-[#D4AF37] outline-none"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-xs text-gray-400 block mb-1.5">Phone Number *</label>
+                        <input
+                          required
+                          type="tel"
+                          value={resPhone}
+                          onChange={(e) => setResPhone(e.target.value)}
+                          placeholder="0300-1234567"
+                          className="w-full bg-[#1C1C20] border border-white/15 rounded-xl p-3 text-sm text-white focus:border-[#D4AF37] outline-none"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid sm:grid-cols-3 gap-4">
+                      <div>
+                        <label className="text-xs text-gray-400 block mb-1.5">Date *</label>
+                        <input
+                          type="date"
+                          required
+                          value={resDate}
+                          onChange={(e) => setResDate(e.target.value)}
+                          className="w-full bg-[#1C1C20] border border-white/15 rounded-xl p-3 text-sm text-white focus:border-[#D4AF37] outline-none"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-xs text-gray-400 block mb-1.5">Time Slot *</label>
+                        <input
+                          type="time"
+                          required
+                          value={resTime}
+                          onChange={(e) => setResTime(e.target.value)}
+                          className="w-full bg-[#1C1C20] border border-white/15 rounded-xl p-3 text-sm text-white focus:border-[#D4AF37] outline-none"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-xs text-gray-400 block mb-1.5">Party Size</label>
+                        <div className="flex items-center justify-between bg-[#1C1C20] border border-white/15 rounded-xl p-2">
+                          <button
+                            type="button"
+                            onClick={() => setResGuests(Math.max(1, resGuests - 1))}
+                            className="p-1.5 rounded-lg bg-white/10 text-white"
+                          >
+                            <Minus className="w-4 h-4" />
+                          </button>
+                          <span className="text-sm font-bold">{resGuests} Guests</span>
+                          <button
+                            type="button"
+                            onClick={() => setResGuests(Math.min(20, resGuests + 1))}
+                            className="p-1.5 rounded-lg bg-white/10 text-white"
+                          >
+                            <Plus className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <button
+                      type="submit"
+                      className="w-full py-4 bg-[#D4AF37] hover:bg-[#F3E5AB] text-black font-bold rounded-xl text-sm transition-all shadow-lg"
+                    >
+                      Confirm Table Reservation
+                    </button>
+                  </form>
+                )}
+              </div>
+            </section>
+          )}
+
+          {/* ==================== DISH CUSTOMIZATION MODAL ==================== */}
+          {activeDish && (
+            <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+              <div className="bg-[#141417] border border-[#D4AF37]/40 rounded-3xl max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl animate-fade-up">
+                <div className="relative h-56">
+                  <img src={activeDish.image} alt={activeDish.name} className="w-full h-full object-cover" />
+                  <button
+                    onClick={() => setActiveDish(null)}
+                    className="absolute top-4 right-4 bg-black/80 text-white p-2 rounded-full hover:bg-[#D4AF37] hover:text-black transition-all"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+
+                <div className="p-6 space-y-6">
+                  <div>
+                    <h3 className="font-serif text-2xl font-bold text-white">{activeDish.name}</h3>
+                    <p className="text-xs text-gray-400 mt-1">{activeDish.description}</p>
+                    <p className="text-lg font-bold text-[#D4AF37] mt-2">
+                      Base Price: Rs. {activeDish.price.toLocaleString()}
+                    </p>
+                  </div>
+
+                  {activeDish.portions && (
+                    <div>
+                      <label className="text-xs font-bold uppercase tracking-wider text-gray-300 block mb-2">
+                        Select Portion / Style
+                      </label>
+                      <div className="space-y-2">
+                        {activeDish.portions.map((p) => (
+                          <button
+                            key={p.id}
+                            type="button"
+                            onClick={() => setSelectedPortion(p)}
+                            className={`w-full flex items-center justify-between p-3 rounded-xl border text-xs font-medium transition-all ${
+                              selectedPortion.id === p.id
+                                ? 'border-[#D4AF37] bg-[#D4AF37]/15 text-white'
+                                : 'border-white/10 bg-white/5 text-gray-300'
+                            }`}
+                          >
+                            <span>{p.name}</span>
+                            <span>{p.priceDelta > 0 ? `+ Rs. ${p.priceDelta}` : 'Included'}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  <div>
+                    <label className="text-xs font-bold uppercase tracking-wider text-gray-300 block mb-2">
+                      Add Official TSO Extras & Dips
+                    </label>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      {TSO_ADDONS.map((addon) => {
+                        const isSelected = selectedAddons.some((a) => a.id === addon.id);
+                        return (
+                          <button
+                            key={addon.id}
+                            type="button"
+                            onClick={() => {
+                              if (isSelected) {
+                                setSelectedAddons(selectedAddons.filter((a) => a.id !== addon.id));
+                              } else {
+                                setSelectedAddons([...selectedAddons, addon]);
+                              }
+                            }}
+                            className={`p-2.5 rounded-xl border text-left text-xs flex items-center justify-between transition-all ${
+                              isSelected
+                                ? 'border-[#D4AF37] bg-[#D4AF37]/15 text-white'
+                                : 'border-white/10 bg-white/5 text-gray-400'
+                            }`}
+                          >
+                            <span className="truncate pr-1">{addon.name}</span>
+                            <span className="text-[#D4AF37] font-semibold shrink-0">+Rs.{addon.price}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-xs font-bold uppercase tracking-wider text-gray-300 block mb-1.5">
+                      Special Kitchen Instructions
+                    </label>
+                    <input
+                      type="text"
+                      value={dishNotes}
+                      onChange={(e) => setDishNotes(e.target.value)}
+                      placeholder="e.g. Extra crispy edges, less jalapeños..."
+                      className="w-full bg-[#1C1C20] border border-white/15 rounded-xl p-3 text-xs text-white focus:border-[#D4AF37] outline-none"
+                    />
+                  </div>
+
+                  <div className="flex items-center gap-4 pt-2">
+                    <div className="flex items-center gap-3 bg-[#1C1C20] border border-white/15 rounded-xl px-3 py-2.5">
+                      <button type="button" onClick={() => setDishQty(Math.max(1, dishQty - 1))} className="text-gray-300 hover:text-white">
+                        <Minus className="w-4 h-4" />
+                      </button>
+                      <span className="font-bold text-sm w-5 text-center">{dishQty}</span>
+                      <button type="button" onClick={() => setDishQty(dishQty + 1)} className="text-gray-300 hover:text-white">
+                        <Plus className="w-4 h-4" />
+                      </button>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={handleAddToCart}
+                      className="flex-1 py-3.5 bg-[#D4AF37] hover:bg-[#F3E5AB] text-black font-bold rounded-xl text-sm transition-all"
+                    >
+                      Add to Bag — Rs.{' '}
+                      {(
+                        (activeDish.price +
+                          selectedPortion.priceDelta +
+                          selectedAddons.reduce((s, a) => s + a.price, 0)) *
+                        dishQty
+                      ).toLocaleString()}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ==================== SLIDE-OUT CART DRAWER ==================== */}
+          {isCartOpen && (
+            <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex justify-end">
+              <div className="bg-[#121215] border-l border-[#D4AF37]/30 w-full max-w-md h-full flex flex-col justify-between p-6 overflow-y-auto">
+                <div>
+                  <div className="flex items-center justify-between pb-4 border-b border-white/10">
+                    <div>
+                      <h2 className="font-serif text-2xl font-bold text-white">Your TSO Bag</h2>
+                      <p className="text-xs text-[#D4AF37]">
+                        Estimated Prep & Delivery: ~{estimatedPrepTime} mins
+                      </p>
+                    </div>
+                    <button onClick={() => setIsCartOpen(false)} className="p-2 rounded-full bg-white/5 text-gray-400 hover:text-white">
+                      <X className="w-5 h-5" />
+                    </button>
+                  </div>
+
+                  {cart.length === 0 ? (
+                    <div className="py-20 text-center space-y-3">
+                      <ShoppingBag className="w-12 h-12 text-gray-600 mx-auto" />
+                      <p className="text-sm text-gray-400">Your order bag is empty.</p>
+                    </div>
+                  ) : (
+                    <div className="space-y-3 my-5 max-h-[42vh] overflow-y-auto pr-1">
+                      {cart.map((item) => (
+                        <div key={item.cartItemId} className="p-3.5 rounded-2xl bg-[#1A1A1E] border border-white/10 space-y-2">
+                          <div className="flex justify-between items-start">
+                            <div>
+                              <h4 className="font-bold text-sm text-white">{item.dish.name}</h4>
+                              <p className="text-[11px] text-gray-400">{item.portion.name}</p>
+                              {item.addons.length > 0 && (
+                                <p className="text-[11px] text-[#D4AF37]">
+                                  + {item.addons.map((a) => a.name).join(', ')}
+                                </p>
+                              )}
+                              {item.notes && (
+                                <p className="text-[11px] italic text-gray-400">Note: "{item.notes}"</p>
+                              )}
+                            </div>
+                            <span className="font-bold text-sm text-white">
+                              Rs. {(item.unitTotal * item.quantity).toLocaleString()}
+                            </span>
+                          </div>
+
+                          <div className="flex items-center justify-between pt-2 border-t border-white/5">
+                            <span className="text-[11px] text-gray-500">
+                              Rs. {item.unitTotal.toLocaleString()} each
+                            </span>
+                            <div className="flex items-center gap-2">
+                              <button
+                                onClick={() =>
+                                  setCart((prev) =>
+                                    prev
+                                      .map((i) =>
+                                        i.cartItemId === item.cartItemId ? { ...i, quantity: i.quantity - 1 } : i
+                                      )
+                                      .filter((i) => i.quantity > 0)
+                                  )
+                                }
+                                className="p-1 rounded bg-white/10 text-white"
+                              >
+                                <Minus className="w-3 h-3" />
+                              </button>
+                              <span className="text-xs font-bold w-4 text-center">{item.quantity}</span>
+                              <button
+                                onClick={() =>
+                                  setCart((prev) =>
+                                    prev.map((i) =>
+                                      i.cartItemId === item.cartItemId ? { ...i, quantity: i.quantity + 1 } : i
+                                    )
+                                  )
+                                }
+                                className="p-1 rounded bg-white/10 text-white"
+                              >
+                                <Plus className="w-3 h-3" />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {cart.length > 0 && (
+                    <div className="pt-3 border-t border-white/10">
+                      <label className="text-xs text-gray-400 block mb-1.5">
+                        Promo Code (Try <strong className="text-[#D4AF37]">TSO10</strong> or{' '}
+                        <strong className="text-[#D4AF37]">SMASH200</strong>)
+                      </label>
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          value={promoInput}
+                          onChange={(e) => setPromoInput(e.target.value)}
+                          placeholder="Enter promo code"
+                          className="flex-1 bg-[#1C1C20] border border-white/15 rounded-xl px-3 py-2 text-xs text-white uppercase outline-none"
+                        />
+                        <button
+                          type="button"
+                          onClick={handleApplyPromo}
+                          className="px-4 py-2 bg-white/10 hover:bg-[#D4AF37] hover:text-black text-white rounded-xl text-xs font-bold transition-all"
+                        >
+                          Apply
+                        </button>
+                      </div>
+                      {promoMessage && <p className="text-[11px] text-[#D4AF37] mt-1">{promoMessage}</p>}
+                    </div>
+                  )}
+                </div>
+
+                {cart.length > 0 && (
+                  <div className="pt-4 border-t border-white/10 space-y-2 text-xs">
+                    <div className="flex justify-between text-gray-300">
+                      <span>Subtotal</span>
+                      <span>Rs. {subtotal.toLocaleString()}</span>
+                    </div>
+                    {discountAmount > 0 && (
+                      <div className="flex justify-between text-emerald-400 font-semibold">
+                        <span>Promo Discount ({appliedPromo})</span>
+                        <span>- Rs. {discountAmount.toLocaleString()}</span>
+                      </div>
+                    )}
+                    <div className="flex justify-between text-gray-300">
+                      <span>PRA Sales Tax (16%)</span>
+                      <span>Rs. {taxAmount.toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between text-gray-300">
+                      <span>Multan Standard Delivery Fee</span>
+                      <span>Rs. {deliveryFee.toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between text-base font-bold text-white pt-2 border-t border-white/10">
+                      <span>Grand Total</span>
+                      <span className="text-[#D4AF37]">Rs. {grandTotal.toLocaleString()}</span>
+                    </div>
+
+                    <button
+                      onClick={() => {
+                        setCheckoutStep(1);
+                        setIsCheckoutOpen(true);
+                      }}
+                      className="w-full mt-3 py-3.5 bg-[#D4AF37] hover:bg-[#F3E5AB] text-black font-bold rounded-xl text-sm transition-all shadow-lg"
+                    >
+                      Proceed to 2-Step Checkout
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* ==================== 2-STEP CHECKOUT MODAL ==================== */}
+          {isCheckoutOpen && (
+            <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+              <div className="bg-[#141418] border border-[#D4AF37]/40 rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-6 max-h-[92vh] overflow-y-auto animate-fade-up">
+                <div className="flex items-center justify-between border-b border-white/10 pb-4">
+                  <div>
+                    <span className="text-[11px] uppercase tracking-widest text-[#D4AF37]">
+                      Step {checkoutStep} of 2
+                    </span>
+                    <h3 className="font-serif text-2xl font-bold text-white">
+                      {checkoutStep === 1 ? 'Multan Delivery Details' : 'Select Payment Method'}
+                    </h3>
+                  </div>
+                  <button onClick={() => setIsCheckoutOpen(false)} className="p-2 rounded-full bg-white/5 text-gray-400 hover:text-white">
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+
+                {checkoutStep === 1 ? (
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      setCheckoutStep(2);
+                    }}
+                    className="space-y-4"
+                  >
+                    <div>
+                      <label className="text-xs text-gray-400 block mb-1">Full Name *</label>
+                      <input
+                        required
+                        value={customerName}
+                        onChange={(e) => setCustomerName(e.target.value)}
+                        placeholder="Enter your full name"
+                        className="w-full bg-[#1C1C20] border border-white/15 rounded-xl p-3 text-sm text-white focus:border-[#D4AF37] outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-xs text-gray-400 block mb-1">Mobile Number (Multan) *</label>
+                      <input
+                        required
+                        type="tel"
+                        value={customerPhone}
+                        onChange={(e) => setCustomerPhone(e.target.value)}
+                        placeholder="0300-1234567"
+                        className="w-full bg-[#1C1C20] border border-white/15 rounded-xl p-3 text-sm text-white focus:border-[#D4AF37] outline-none"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-xs text-gray-400 block mb-1.5">
+                        Tap a Multan Area or Type Complete Address *
+                      </label>
+                      <div className="flex flex-wrap gap-1.5 mb-2">
+                        {MULTAN_AREAS.slice(0, 6).map((area) => (
+                          <button
+                            key={area}
+                            type="button"
+                            onClick={() => setCustomerAddress(`${area}, Multan`)}
+                            className="text-[11px] bg-white/5 hover:bg-[#D4AF37]/20 border border-white/10 hover:border-[#D4AF37] text-gray-300 px-2.5 py-1 rounded-full transition-all"
+                          >
+                            + {area}
+                          </button>
+                        ))}
+                      </div>
+                      <textarea
+                        required
+                        rows={2}
+                        value={customerAddress}
+                        onChange={(e) => setCustomerAddress(e.target.value)}
+                        placeholder="House #, Street, Block, Sector (e.g. House 14, Block B, Model Town, Multan)"
+                        className="w-full bg-[#1C1C20] border border-white/15 rounded-xl p-3 text-sm text-white focus:border-[#D4AF37] outline-none"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-xs text-gray-400 block mb-1">Rider Instructions (Optional)</label>
+                      <input
+                        value={deliveryInstructions}
+                        onChange={(e) => setDeliveryInstructions(e.target.value)}
+                        placeholder="e.g. Ring bell twice, leave at security gate"
+                        className="w-full bg-[#1C1C20] border border-white/15 rounded-xl p-3 text-sm text-white focus:border-[#D4AF37] outline-none"
+                      />
+                    </div>
+
+                    <button
+                      type="submit"
+                      className="w-full py-3.5 bg-[#D4AF37] hover:bg-[#F3E5AB] text-black font-bold rounded-xl text-sm transition-all"
+                    >
+                      Continue to Payment Options →
+                    </button>
+                  </form>
+                ) : (
+                  <form onSubmit={handleCompleteOrder} className="space-y-5">
+                    <div className="grid grid-cols-3 gap-2.5">
+                      <button
+                        type="button"
+                        onClick={() => setPaymentMethod('COD')}
+                        className={`p-3 rounded-2xl border text-center flex flex-col items-center gap-1.5 transition-all ${
+                          paymentMethod === 'COD'
+                            ? 'border-[#D4AF37] bg-[#D4AF37]/15 text-white'
+                            : 'border-white/10 bg-white/5 text-gray-400'
+                        }`}
+                      >
+                        <Banknote className="w-5 h-5 text-[#D4AF37]" />
+                        <span className="text-xs font-bold">Cash on Delivery</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setPaymentMethod('CARD')}
+                        className={`p-3 rounded-2xl border text-center flex flex-col items-center gap-1.5 transition-all ${
+                          paymentMethod === 'CARD'
+                            ? 'border-[#D4AF37] bg-[#D4AF37]/15 text-white'
+                            : 'border-white/10 bg-white/5 text-gray-400'
+                        }`}
+                      >
+                        <CreditCard className="w-5 h-5 text-[#D4AF37]" />
+                        <span className="text-xs font-bold">Debit / Credit Card</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setPaymentMethod('WALLET')}
+                        className={`p-3 rounded-2xl border text-center flex flex-col items-center gap-1.5 transition-all ${
+                          paymentMethod === 'WALLET'
+                            ? 'border-[#D4AF37] bg-[#D4AF37]/15 text-white'
+                            : 'border-white/10 bg-white/5 text-gray-400'
+                        }`}
+                      >
+                        <Smartphone className="w-5 h-5 text-[#D4AF37]" />
+                        <span className="text-xs font-bold">Apple / Google Pay</span>
+                      </button>
+                    </div>
+
+                    {paymentMethod === 'COD' && (
+                      <div className="p-4 rounded-2xl bg-amber-950/30 border border-[#D4AF37]/40 space-y-1">
+                        <p className="text-xs text-[#F3E5AB] font-bold">Cash on Delivery Selected</p>
+                        <p className="text-xs text-gray-300">
+                          Please keep exact <strong className="text-white">Rs. {grandTotal.toLocaleString()}</strong> ready to hand over to Rider Bilal Ahmed upon arrival.
+                        </p>
+                      </div>
+                    )}
+
+                    {paymentMethod === 'CARD' && (
+                      <div className="space-y-3 bg-[#1B1B20] p-4 rounded-2xl border border-white/10">
+                        <p className="text-[11px] text-gray-400">
+                          Sandbox Showcase Mode — No real money is charged.
+                        </p>
+                        <input
+                          required
+                          value={cardNumber}
+                          onChange={(e) => setCardNumber(e.target.value)}
+                          placeholder="Card Number (4242 •••• •••• 4242)"
+                          className="w-full bg-[#121215] border border-white/15 rounded-xl p-2.5 text-xs text-white outline-none"
+                        />
+                        <div className="grid grid-cols-2 gap-2">
+                          <input
+                            required
+                            value={cardExpiry}
+                            onChange={(e) => setCardExpiry(e.target.value)}
+                            placeholder="MM/YY"
+                            className="bg-[#121215] border border-white/15 rounded-xl p-2.5 text-xs text-white outline-none"
+                          />
+                          <input
+                            required
+                            value={cardCvc}
+                            onChange={(e) => setCardCvc(e.target.value)}
+                            placeholder="CVC"
+                            className="bg-[#121215] border border-white/15 rounded-xl p-2.5 text-xs text-white outline-none"
+                          />
+                        </div>
+                      </div>
+                    )}
+
+                    {paymentMethod === 'WALLET' && (
+                      <div className="p-4 rounded-2xl bg-white/5 border border-white/10 text-center space-y-2">
+                        <p className="text-xs text-white font-semibold">
+                          Instant One-Tap Express Authorization
+                        </p>
+                        <p className="text-[11px] text-gray-400">
+                          Amount: Rs. {grandTotal.toLocaleString()} (Demo Mode — Rs. 0 charged)
+                        </p>
+                      </div>
+                    )}
+
+                    <div className="flex gap-3">
+                      <button
+                        type="button"
+                        onClick={() => setCheckoutStep(1)}
+                        className="px-4 py-3.5 rounded-xl border border-white/15 text-xs text-gray-300"
+                      >
+                        ← Back
+                      </button>
+                      <button
+                        type="submit"
+                        className="flex-1 py-3.5 bg-[#D4AF37] hover:bg-[#F3E5AB] text-black font-bold rounded-xl text-sm transition-all shadow-xl"
+                      >
+                        Place Order & Start Live Tracking (Rs. {grandTotal.toLocaleString()})
+                      </button>
+                    </div>
+                  </form>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* ==================== RIDER CALL & CHAT MODALS ==================== */}
+          {isCallModalOpen && (
+            <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
+              <div className="bg-[#16161A] border border-[#D4AF37]/40 rounded-3xl p-6 max-w-sm w-full text-center space-y-4">
+                <div className="w-16 h-16 rounded-full bg-[#D4AF37]/20 border border-[#D4AF37] flex items-center justify-center mx-auto text-[#D4AF37] animate-pulse">
+                  <Phone className="w-7 h-7" />
+                </div>
+                <h4 className="font-serif text-xl font-bold text-white">Calling Rider Bilal Ahmed...</h4>
+                <p className="text-xs text-gray-400">TSO Multan Dispatch Bridge • +92 304 8765432</p>
+                <button
+                  onClick={() => setIsCallModalOpen(false)}
+                  className="w-full py-3 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs"
+                >
+                  End Call
+                </button>
+              </div>
+            </div>
+          )}
+
+          {isChatOpen && (
+            <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
+              <div className="bg-[#141418] border border-[#D4AF37]/40 rounded-3xl max-w-md w-full p-5 flex flex-col h-[440px]">
+                <div className="flex justify-between items-center pb-3 border-b border-white/10">
+                  <div>
+                    <h4 className="font-bold text-white text-sm">Chat with Rider Bilal Ahmed</h4>
+                    <span className="text-[10px] text-emerald-400">● Online • En Route in Multan</span>
+                  </div>
+                  <button onClick={() => setIsChatOpen(false)} className="text-gray-400 hover:text-white">
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+
+                <div className="flex-1 overflow-y-auto py-4 space-y-3">
+                  {chatMessages.map((m, idx) => (
+                    <div key={idx} className={`flex flex-col ${m.sender === 'user' ? 'items-end' : 'items-start'}`}>
+                      <div
+                        className={`px-3.5 py-2 rounded-2xl text-xs max-w-[80%] ${
+                          m.sender === 'user'
+                            ? 'bg-[#D4AF37] text-black font-medium'
+                            : 'bg-white/10 text-white'
+                        }`}
+                      >
+                        {m.text}
+                      </div>
+                      <span className="text-[9px] text-gray-500 mt-0.5">{m.time}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <form onSubmit={sendChatMessage} className="flex gap-2 pt-2 border-t border-white/10">
+                  <input
+                    value={chatDraft}
+                    onChange={(e) => setChatDraft(e.target.value)}
+                    placeholder="Message Bilal Ahmed..."
+                    className="flex-1 bg-[#1C1C20] border border-white/15 rounded-xl px-3 py-2 text-xs text-white outline-none"
+                  />
+                  <button type="submit" className="p-2.5 bg-[#D4AF37] text-black rounded-xl font-bold">
+                    <Send className="w-4 h-4" />
+                  </button>
+                </form>
+              </div>
+            </div>
+          )}
+
+          {/* ==================== FOOTER ==================== */}
+          <footer className="bg-[#080809] border-t border-white/10 py-12 mt-16">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 grid sm:grid-cols-3 gap-8 text-xs text-gray-400">
+              <div className="space-y-2">
+                <h4 className="font-serif text-lg font-bold text-white">TSO — THE SMASH OVEN</h4>
+                <p>7, Shalimar Colony, Model Town, Multan, Punjab, Pakistan.</p>
+                <p className="text-[#D4AF37]">Open Daily: 9:00 AM – 5:00 AM</p>
+              </div>
+              <div className="space-y-2">
+                <h4 className="font-bold text-white uppercase tracking-wider">Verified Policies</h4>
+                <p>• 100% Halal Certified Meat & Ingredients</p>
+                <p>• Flat Rs. 150 Delivery Across Multan</p>
+                <p>• 16% PRA Standard GST Included at Checkout</p>
+              </div>
+              <div className="space-y-2">
+                <h4 className="font-bold text-white uppercase tracking-wider">Order & Support Desk</h4>
+                <p>Multan Branch Desk: (061) 622-4589</p>
+                <p>Active Promo Codes: TSO10 (10% Off) • SMASH200 (Rs. 200 Off)</p>
+              </div>
+            </div>
+          </footer>
+
+          {/* ==================== MOBILE STICKY BOTTOM BAR ==================== */}
+          <div className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-[#0B0B0C]/95 backdrop-blur-lg border-t border-[#D4AF37]/30 grid grid-cols-4 py-2 px-2">
+            <button
+              onClick={() => setActiveTab('home')}
+              className={`flex flex-col items-center gap-1 py-1 text-[11px] ${
+                activeTab === 'home' ? 'text-[#D4AF37] font-bold' : 'text-gray-400'
+              }`}
+            >
+              <Sparkles className="w-4 h-4" />
+              Home
+            </button>
+            <button
+              onClick={() => setActiveTab('menu')}
+              className={`flex flex-col items-center gap-1 py-1 text-[11px] ${
+                activeTab === 'menu' ? 'text-[#D4AF37] font-bold' : 'text-gray-400'
+              }`}
+            >
+              <Utensils className="w-4 h-4" />
+              Menu
+            </button>
+            <button
+              onClick={() => setActiveTab('tracking')}
+              className={`flex flex-col items-center gap-1 py-1 text-[11px] ${
+                activeTab === 'tracking' ? 'text-[#D4AF37] font-bold' : 'text-gray-400'
+              }`}
+            >
+              <Bike className="w-4 h-4" />
+              Track
+            </button>
+            <button
+              onClick={() => setActiveTab('reservations')}
+              className={`flex flex-col items-center gap-1 py-1 text-[11px] ${
+                activeTab === 'reservations' ? 'text-[#D4AF37] font-bold' : 'text-gray-400'
+              }`}
+            >
+              <Calendar className="w-4 h-4" />
+              Reserve
+            </button>
           </div>
         </div>
-      </section>
-    </>
-  );
-}
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
