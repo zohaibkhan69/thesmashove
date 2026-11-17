@@ -1,0 +1,218 @@
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { motion } from "framer-motion";
+import { ArrowRight, CalendarDays, Clock, MapPin, Star, Quote } from "lucide-react";
+import heroImg from "@/assets/hero-burger.jpg";
+import ambienceImg from "@/assets/ambience.jpg";
+import pizzaImg from "@/assets/dish-pizza.jpg";
+import { Button } from "@/components/ui/button";
+import { Reveal, SectionHeading } from "@/components/site/Reveal";
+import { DishCard } from "@/components/site/DishCard";
+import { SIGNATURES, getDish, formatRs } from "@/lib/menu";
+import { useCart } from "@/store/cart";
+
+export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "TSO – The Smash Oven | Smash Burgers & Deep-Dish Pizza in Multan" },
+      {
+        name: "description",
+        content:
+          "Gold-standard smash burgers, deep-dish pizzas and loaded fries in Model Town, Multan. Open till 5 AM — order online or reserve a table.",
+      },
+      { property: "og:title", content: "TSO – The Smash Oven | Multan" },
+      {
+        property: "og:description",
+        content: "Smash burgers, deep-dish pizzas and late-night cravings. Order online or reserve a table.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: Home,
+});
+
+const REVIEWS = [
+  { name: "Hamza R.", text: "The Butter Up is unreal — juicy, buttery and the mushrooms are perfect. Best burger in Multan, hands down.", rating: 5 },
+  { name: "Ayesha K.", text: "That Peri Peri deep dish cheese pull! Gorgeous interiors and they're open till 5 AM. Our go-to after late nights.", rating: 5 },
+  { name: "Usman T.", text: "Heavy, indulgent and worth every rupee. Lotus shake is dessert in a glass.", rating: 5 },
+];
+
+function Home() {
+  const viewDish = useCart((s) => s.viewDish);
+  const chefSpecial = getDish("peri-peri-deep-dish")!;
+
+  return (
+    <>
+      {/* Hero */}
+      <section className="relative flex min-h-[100svh] items-end overflow-hidden">
+        <motion.img
+          src={heroImg}
+          alt="Double smash beef burger with molten cheese under warm golden light"
+          width={1920}
+          height={1088}
+          initial={{ scale: 1.15 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 2.4, ease: [0.22, 1, 0.36, 1] }}
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-hero-fade" />
+        <div className="absolute inset-0 bg-side-fade" />
+        <div className="relative mx-auto w-full max-w-7xl px-4 pb-28 pt-32 md:px-8 md:pb-24">
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.8 }}
+            className="eyebrow"
+          >
+            Model Town · Multan · Open till 5 AM
+          </motion.p>
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.45, duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-6 max-w-3xl text-5xl leading-[0.95] sm:text-7xl md:text-8xl"
+          >
+            Smashed to <em className="text-gold-gradient">perfection.</em>
+            <br />
+            Served in gold.
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7, duration: 0.9 }}
+            className="mt-6 max-w-lg text-base text-muted-foreground md:text-lg"
+          >
+            Double-smashed beef, deep-dish pizzas with an extreme cheese pull, and shakes worth staying up for.
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.9, duration: 0.9 }}
+            className="mt-10 flex flex-col gap-3 sm:flex-row"
+          >
+            <Button variant="gold" size="lg" asChild>
+              <Link to="/menu">
+                Explore Menu & Order Online <ArrowRight />
+              </Link>
+            </Button>
+            <Button variant="glass" size="lg" asChild>
+              <Link to="/reserve">
+                <CalendarDays /> Reserve a table
+              </Link>
+            </Button>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.2, duration: 1 }}
+            className="mt-14 hidden gap-10 text-sm text-muted-foreground md:flex"
+          >
+            <span className="flex items-center gap-2">
+              <Star className="h-4 w-4 fill-gold text-gold" /> Loved across Multan
+            </span>
+            <span className="flex items-center gap-2">
+              <Clock className="h-4 w-4 text-gold" /> 9 AM – 5 AM daily
+            </span>
+            <span className="flex items-center gap-2">
+              <MapPin className="h-4 w-4 text-gold" /> 7 Shalimar Colony
+            </span>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Signature dishes */}
+      <section className="relative ambient-glow py-24">
+        <div className="mx-auto max-w-7xl px-4 md:px-8">
+          <SectionHeading
+            eyebrow="Signature dishes"
+            title="The ones Multan comes back for"
+            sub="Crafted in small batches, smashed on a blazing griddle, plated with intent."
+          />
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {SIGNATURES.slice(0, 8).map((d, i) => (
+              <DishCard key={d.id} dish={d} index={i} />
+            ))}
+          </div>
+          <Reveal className="mt-12 text-center">
+            <Button variant="outlineGold" size="lg" asChild>
+              <Link to="/menu">
+                View the full menu <ArrowRight />
+              </Link>
+            </Button>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Chef's special */}
+      <section className="py-12">
+        <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 md:grid-cols-2 md:px-8">
+          <Reveal className="relative">
+            <div className="overflow-hidden rounded-3xl border border-hairline shadow-lift">
+              <img src={pizzaImg} alt={chefSpecial.name} loading="lazy" width={1024} height={1024} className="aspect-square w-full object-cover" />
+            </div>
+            <div className="absolute -bottom-6 -right-2 rounded-2xl glass px-5 py-4 md:-right-6">
+              <p className="eyebrow">Chef's special</p>
+              <p className="mt-1 font-display text-2xl">{formatRs(chefSpecial.price)}</p>
+            </div>
+          </Reveal>
+          <Reveal delay={0.15}>
+            <p className="eyebrow">From the Chef's Table</p>
+            <h2 className="mt-4 text-4xl md:text-6xl">{chefSpecial.name}</h2>
+            <p className="mt-6 text-lg leading-relaxed text-muted-foreground">{chefSpecial.description}</p>
+            <p className="mt-4 text-sm text-muted-foreground">
+              Baked in a cast-iron pan until the crust turns deep gold and the cheese stretches for days.
+            </p>
+            <Button variant="gold" size="lg" className="mt-8" onClick={() => viewDish(chefSpecial.id)}>
+              Order the special
+            </Button>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Ambience */}
+      <section className="relative mt-24 overflow-hidden">
+        <img src={ambienceImg} alt="TSO dining room with brass pendant lights and leather booths" loading="lazy" width={1600} height={1008} className="h-[70vh] w-full object-cover" />
+        <div className="absolute inset-0 bg-hero-fade" />
+        <div className="absolute inset-0 flex items-center">
+          <div className="mx-auto w-full max-w-7xl px-4 md:px-8">
+            <Reveal className="max-w-lg rounded-3xl glass p-8 md:p-10">
+              <p className="eyebrow">Dine with us</p>
+              <h2 className="mt-4 text-4xl md:text-5xl">Late nights, low light, big flavour.</h2>
+              <p className="mt-4 text-muted-foreground">
+                Brass, marble and leather booths — the perfect backdrop for birthdays, meetups and 3 AM cravings.
+              </p>
+              <Button variant="gold" className="mt-6" asChild>
+                <Link to="/reserve">
+                  <CalendarDays /> Book your table
+                </Link>
+              </Button>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* Reviews */}
+      <section className="py-24">
+        <div className="mx-auto max-w-7xl px-4 md:px-8">
+          <SectionHeading eyebrow="Guest notes" title="What our guests say" />
+          <div className="grid gap-6 md:grid-cols-3">
+            {REVIEWS.map((r, i) => (
+              <Reveal key={r.name} delay={i * 0.1} className="rounded-3xl border border-hairline bg-card p-8">
+                <Quote className="h-6 w-6 text-gold" />
+                <p className="mt-5 font-display text-xl leading-snug">“{r.text}”</p>
+                <div className="mt-6 flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">{r.name}</span>
+                  <span className="flex gap-0.5">
+                    {Array.from({ length: r.rating }).map((_, k) => (
+                      <Star key={k} className="h-3.5 w-3.5 fill-gold text-gold" />
+                    ))}
+                  </span>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
