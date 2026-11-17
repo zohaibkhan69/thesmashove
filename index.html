@@ -53,7 +53,7 @@
     }
   </style>
 </head>
-<body class="bg-[#0B0B0C] text-[#F5F5F7] antialiased selection:bg-[#D4AF37] selection:text-black">
+<body class="bg-[#0B0B0C] text-[#F5F5F7] antialiased selection:bg-[#E11D48] selection:text-white">
   <div id="root"></div>
 
   <script type="text/babel">
@@ -576,41 +576,41 @@
         <div className="min-h-screen bg-[#0B0B0C] text-[#F5F5F7] font-sans pb-20 md:pb-0">
           {/* POP-UP TOAST NOTIFICATION */}
           {toastAlert && (
-            <div className="fixed top-24 right-4 z-50 max-w-sm bg-[#161618]/95 border border-[#D4AF37] text-white px-5 py-4 rounded-2xl shadow-2xl flex items-center gap-3 animate-bounce">
-              <Sparkles className="w-5 h-5 text-[#D4AF37] shrink-0" />
+            <div className="fixed top-24 right-4 z-50 max-w-sm bg-[#161618]/95 border border-[#E11D48] text-white px-5 py-4 rounded-2xl shadow-2xl flex items-center gap-3 animate-bounce">
+              <Sparkles className="w-5 h-5 text-[#E11D48] shrink-0" />
               <p className="text-xs sm:text-sm font-medium">{toastAlert}</p>
             </div>
           )}
 
           {/* TOP NAVBAR */}
-          <header className="sticky top-0 z-40 bg-[#0B0B0C]/85 backdrop-blur-xl border-b border-[#D4AF37]/20">
+          <header className="sticky top-0 z-40 bg-[#0B0B0C]/85 backdrop-blur-xl border-b border-[#E11D48]/25">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
               <button onClick={() => setActiveTab('home')} className="flex items-center gap-3 text-left group">
-                <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#D4AF37] to-[#9A7B1C] flex items-center justify-center text-black font-black text-lg shadow-lg">
+                <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#E11D48] to-[#881337] flex items-center justify-center text-white font-black text-lg shadow-lg shadow-[#E11D48]/20">
                   TSO
                 </div>
                 <div>
-                  <span className="block font-serif text-lg sm:text-xl font-bold tracking-wider text-white group-hover:text-[#D4AF37] transition-colors">
+                  <span className="block font-serif text-lg sm:text-xl font-bold tracking-wider text-white group-hover:text-[#E11D48] transition-colors">
                     THE SMASH OVEN
                   </span>
-                  <span className="block text-[10px] uppercase tracking-widest text-[#D4AF37]">
+                  <span className="block text-[10px] uppercase tracking-widest text-[#E11D48]">
                     Model Town • Multan
                   </span>
                 </div>
               </button>
 
               <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
-                <button onClick={() => setActiveTab('home')} className={`transition-colors ${activeTab === 'home' ? 'text-[#D4AF37]' : 'text-gray-300 hover:text-white'}`}>
+                <button onClick={() => setActiveTab('home')} className={`transition-colors ${activeTab === 'home' ? 'text-[#E11D48]' : 'text-gray-300 hover:text-white'}`}>
                   Home
                 </button>
-                <button onClick={() => setActiveTab('menu')} className={`transition-colors ${activeTab === 'menu' ? 'text-[#D4AF37]' : 'text-gray-300 hover:text-white'}`}>
+                <button onClick={() => setActiveTab('menu')} className={`transition-colors ${activeTab === 'menu' ? 'text-[#E11D48]' : 'text-gray-300 hover:text-white'}`}>
                   Explore Menu
                 </button>
-                <button onClick={() => setActiveTab('reservations')} className={`transition-colors ${activeTab === 'reservations' ? 'text-[#D4AF37]' : 'text-gray-300 hover:text-white'}`}>
+                <button onClick={() => setActiveTab('reservations')} className={`transition-colors ${activeTab === 'reservations' ? 'text-[#E11D48]' : 'text-gray-300 hover:text-white'}`}>
                   Reserve a Table
                 </button>
-                <button onClick={() => setActiveTab('tracking')} className={`flex items-center gap-1.5 transition-colors ${activeTab === 'tracking' ? 'text-[#D4AF37]' : 'text-gray-300 hover:text-white'}`}>
-                  <Bike className="w-4 h-4 text-[#D4AF37]" />
+                <button onClick={() => setActiveTab('tracking')} className={`flex items-center gap-1.5 transition-colors ${activeTab === 'tracking' ? 'text-[#E11D48]' : 'text-gray-300 hover:text-white'}`}>
+                  <Bike className="w-4 h-4 text-[#E11D48]" />
                   Live Tracking
                   {activeOrderId && <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />}
                 </button>
@@ -620,18 +620,18 @@
                 <button
                   onClick={() => setSoundEnabled(!soundEnabled)}
                   title="Toggle Status Sound Alerts"
-                  className="p-2.5 rounded-full border border-white/10 text-gray-300 hover:border-[#D4AF37]/50 hover:text-[#D4AF37] transition-all"
+                  className="p-2.5 rounded-full border border-white/10 text-gray-300 hover:border-[#E11D48]/50 hover:text-[#E11D48] transition-all"
                 >
                   {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
                 </button>
 
                 <button
                   onClick={() => setIsCartOpen(true)}
-                  className="relative flex items-center gap-2.5 bg-[#D4AF37] hover:bg-[#F3E5AB] text-black font-semibold px-4 py-2.5 rounded-full text-sm transition-all shadow-lg"
+                  className="relative flex items-center gap-2.5 bg-[#E11D48] hover:bg-[#BE123C] text-white font-semibold px-4 py-2.5 rounded-full text-sm transition-all shadow-lg shadow-[#E11D48]/25"
                 >
                   <ShoppingBag className="w-4 h-4" />
                   <span className="hidden sm:inline">Order Bag</span>
-                  <span className="bg-black text-[#D4AF37] text-xs font-bold px-2 py-0.5 rounded-full">
+                  <span className="bg-black text-white text-xs font-bold px-2 py-0.5 rounded-full">
                     {cart.reduce((s, i) => s + i.quantity, 0)}
                   </span>
                 </button>
@@ -642,7 +642,7 @@
           {/* ==================== HOME VIEW ==================== */}
           {activeTab === 'home' && (
             <div className="animate-fade-up">
-              <section className="relative min-h-[82vh] flex items-center overflow-hidden border-b border-[#D4AF37]/20">
+              <section className="relative min-h-[82vh] flex items-center overflow-hidden border-b border-[#E11D48]/20">
                 <div className="absolute inset-0 z-0">
                   <img
                     src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=1800&q=85"
@@ -655,12 +655,12 @@
 
                 <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-20 grid lg:grid-cols-12 gap-12 items-center">
                   <div className="lg:col-span-7 space-y-6">
-                    <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#D4AF37]/15 border border-[#D4AF37]/40 text-[#F3E5AB] text-xs font-medium tracking-wide">
-                      <Sparkles className="w-3.5 h-3.5 text-[#D4AF37]" />
+                    <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#E11D48]/15 border border-[#E11D48]/40 text-[#FDA4AF] text-xs font-medium tracking-wide">
+                      <Sparkles className="w-3.5 h-3.5 text-[#E11D48]" />
                       OPEN DAILY 9:00 AM – 5:00 AM • MODEL TOWN, MULTAN
                     </div>
                     <h1 className="font-serif text-4xl sm:text-6xl lg:text-7xl font-bold text-white leading-tight">
-                      Multan’s Ultimate <span className="text-[#D4AF37]">Smash Burgers</span> & Deep Dish.
+                      Multan’s Ultimate <span className="text-[#E11D48]">Smash Burgers</span> & Deep Dish.
                     </h1>
                     <p className="text-gray-300 text-base sm:text-lg max-w-2xl leading-relaxed">
                       Crafted with 100% Halal prime Sear-Smashed beef, artisan brioche buns, and molten deep-dish cheese pulls. Order directly from 7 Shalimar Colony, Model Town with live GPS rider tracking.
@@ -668,14 +668,14 @@
                     <div className="flex flex-wrap gap-4 pt-2">
                       <button
                         onClick={() => setActiveTab('menu')}
-                        className="px-7 py-4 rounded-full bg-[#D4AF37] hover:bg-[#F3E5AB] text-black font-bold text-sm sm:text-base transition-all shadow-xl flex items-center gap-2"
+                        className="px-7 py-4 rounded-full bg-[#E11D48] hover:bg-[#BE123C] text-white font-bold text-sm sm:text-base transition-all shadow-xl shadow-[#E11D48]/25 flex items-center gap-2"
                       >
                         Explore Menu & Order Online
                         <ChevronRight className="w-5 h-5" />
                       </button>
                       <button
                         onClick={() => setActiveTab('reservations')}
-                        className="px-7 py-4 rounded-full bg-white/5 hover:bg-white/15 text-white border border-[#D4AF37]/40 font-semibold text-sm sm:text-base transition-all"
+                        className="px-7 py-4 rounded-full bg-white/5 hover:bg-white/15 text-white border border-[#E11D48]/40 font-semibold text-sm sm:text-base transition-all"
                       >
                         Reserve a Table
                       </button>
@@ -683,15 +683,15 @@
 
                     <div className="grid grid-cols-3 gap-4 pt-6 max-w-lg border-t border-white/10">
                       <div>
-                        <p className="text-[#D4AF37] font-serif text-2xl font-bold">5:00 AM</p>
+                        <p className="text-[#E11D48] font-serif text-2xl font-bold">5:00 AM</p>
                         <p className="text-xs text-gray-400">Late-Night Cravings</p>
                       </div>
                       <div>
-                        <p className="text-[#D4AF37] font-serif text-2xl font-bold">Rs. 150</p>
+                        <p className="text-[#E11D48] font-serif text-2xl font-bold">Rs. 150</p>
                         <p className="text-xs text-gray-400">Flat Multan Delivery</p>
                       </div>
                       <div>
-                        <p className="text-[#D4AF37] font-serif text-2xl font-bold">100% Halal</p>
+                        <p className="text-[#E11D48] font-serif text-2xl font-bold">100% Halal</p>
                         <p className="text-xs text-gray-400">Fresh Daily Grind</p>
                       </div>
                     </div>
@@ -703,7 +703,7 @@
               <section className="max-w-7xl mx-auto px-4 sm:px-6 py-16">
                 <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10">
                   <div>
-                    <span className="text-xs uppercase tracking-widest text-[#D4AF37] font-semibold">
+                    <span className="text-xs uppercase tracking-widest text-[#E11D48] font-semibold">
                       Most Ordered in Multan
                     </span>
                     <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white mt-1">
@@ -712,7 +712,7 @@
                   </div>
                   <button
                     onClick={() => setActiveTab('menu')}
-                    className="text-sm text-[#D4AF37] hover:underline mt-3 sm:mt-0 flex items-center gap-1"
+                    className="text-sm text-[#E11D48] hover:underline mt-3 sm:mt-0 flex items-center gap-1"
                   >
                     View Full Menu <ChevronRight className="w-4 h-4" />
                   </button>
@@ -723,7 +723,7 @@
                     <div
                       key={dish.id}
                       onClick={() => openDishModal(dish)}
-                      className="group cursor-pointer bg-[#141416] border border-white/10 hover:border-[#D4AF37]/60 rounded-2xl overflow-hidden transition-all duration-300 flex flex-col justify-between shadow-lg"
+                      className="group cursor-pointer bg-[#141416] border border-white/10 hover:border-[#E11D48]/60 rounded-2xl overflow-hidden transition-all duration-300 flex flex-col justify-between shadow-lg"
                     >
                       <div className="relative h-48 overflow-hidden">
                         <img
@@ -731,20 +731,20 @@
                           alt={dish.name}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         />
-                        <span className="absolute top-3 left-3 bg-black/80 backdrop-blur-md text-[#D4AF37] border border-[#D4AF37]/40 text-[10px] font-bold uppercase px-2.5 py-1 rounded-full">
+                        <span className="absolute top-3 left-3 bg-black/80 backdrop-blur-md text-[#FDA4AF] border border-[#E11D48]/40 text-[10px] font-bold uppercase px-2.5 py-1 rounded-full">
                           Signature
                         </span>
                       </div>
                       <div className="p-5 flex-1 flex flex-col justify-between">
                         <div>
-                          <h3 className="font-serif text-lg font-bold text-white group-hover:text-[#D4AF37] transition-colors">
+                          <h3 className="font-serif text-lg font-bold text-white group-hover:text-[#E11D48] transition-colors">
                             {dish.name}
                           </h3>
                           <p className="text-xs text-gray-400 mt-1 line-clamp-2">{dish.description}</p>
                         </div>
                         <div className="flex items-center justify-between pt-4 mt-4 border-t border-white/10">
                           <span className="text-white font-bold">Rs. {dish.price.toLocaleString()}</span>
-                          <span className="text-xs bg-[#D4AF37]/15 text-[#D4AF37] border border-[#D4AF37]/30 px-3 py-1 rounded-full font-semibold">
+                          <span className="text-xs bg-[#E11D48]/15 text-[#FDA4AF] border border-[#E11D48]/30 px-3 py-1 rounded-full font-semibold">
                             Customize +
                           </span>
                         </div>
@@ -755,35 +755,35 @@
               </section>
 
               {/* Chef's Special */}
-              <section className="bg-[#121215] border-y border-[#D4AF37]/20 py-16">
+              <section className="bg-[#121215] border-y border-[#E11D48]/20 py-16">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 grid md:grid-cols-2 gap-10 items-center">
-                  <div className="relative rounded-3xl overflow-hidden border border-[#D4AF37]/30 shadow-2xl">
+                  <div className="relative rounded-3xl overflow-hidden border border-[#E11D48]/30 shadow-2xl">
                     <img
                       src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=1000&q=80"
                       alt="Peri Peri Deep Dish Pizza"
                       className="w-full h-80 sm:h-96 object-cover"
                     />
-                    <div className="absolute bottom-4 left-4 bg-black/85 backdrop-blur-md px-4 py-2 rounded-xl border border-[#D4AF37]/40">
-                      <p className="text-xs text-[#D4AF37] font-bold">CHEF’S LATE-NIGHT SPECIAL</p>
+                    <div className="absolute bottom-4 left-4 bg-black/85 backdrop-blur-md px-4 py-2 rounded-xl border border-[#E11D48]/40">
+                      <p className="text-xs text-[#E11D48] font-bold">CHEF’S LATE-NIGHT SPECIAL</p>
                       <p className="text-sm text-white font-serif">Chicago-Style Peri Peri Deep Dish</p>
                     </div>
                   </div>
                   <div className="space-y-5">
-                    <div className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-[#D4AF37]">
+                    <div className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-[#E11D48]">
                       <Award className="w-4 h-4" /> Unmatched Cheese Pull in Model Town
                     </div>
                     <h2 className="font-serif text-3xl sm:text-5xl font-bold text-white">
                       The Famous Peri Peri Deep Dish & Butter Up Smash
                     </h2>
                     <p className="text-gray-300 text-sm sm:text-base leading-relaxed">
-                      Baked in heavy cast-iron pans with double-layered mozzarella, spicy peri-peri chicken chunks, and topped with our signature half-baked smash patties. Use code <strong className="text-[#D4AF37]">TSO10</strong> for 10% off or <strong className="text-[#D4AF37]">SMASH200</strong> for Rs. 200 off orders above Rs. 1,000.
+                      Baked in heavy cast-iron pans with double-layered mozzarella, spicy peri-peri chicken chunks, and topped with our signature half-baked smash patties. Use code <strong className="text-[#E11D48]">TSO10</strong> for 10% off or <strong className="text-[#E11D48]">SMASH200</strong> for Rs. 200 off orders above Rs. 1,000.
                     </p>
                     <button
                       onClick={() => {
                         const special = TSO_MENU.find((i) => i.id === 'p-peri-peri');
                         if (special) openDishModal(special);
                       }}
-                      className="px-6 py-3.5 bg-[#D4AF37] text-black font-bold rounded-full text-sm hover:bg-[#F3E5AB] transition-all"
+                      className="px-6 py-3.5 bg-[#E11D48] text-white font-bold rounded-full text-sm hover:bg-[#BE123C] transition-all shadow-lg shadow-[#E11D48]/25"
                     >
                       Order Chef’s Special — Rs. 1,799
                     </button>
@@ -795,7 +795,7 @@
               <section className="max-w-7xl mx-auto px-4 sm:px-6 py-16 space-y-16">
                 <div className="grid md:grid-cols-2 gap-8 items-center">
                   <div className="space-y-4">
-                    <span className="text-xs uppercase tracking-widest text-[#D4AF37]">The Ambience</span>
+                    <span className="text-xs uppercase tracking-widest text-[#E11D48]">The Ambience</span>
                     <h3 className="font-serif text-3xl font-bold text-white">
                       Modern Aesthetic Dining at Shalimar Colony
                     </h3>
@@ -845,15 +845,15 @@
                       },
                     ].map((r, i) => (
                       <div key={i} className="bg-[#141416] p-6 rounded-2xl border border-white/10 space-y-3">
-                        <div className="flex text-[#D4AF37]">
+                        <div className="flex text-[#E11D48]">
                           {[...Array(5)].map((_, idx) => (
-                            <Star key={idx} className="w-4 h-4 fill-[#D4AF37]" />
+                            <Star key={idx} className="w-4 h-4 fill-[#E11D48]" />
                           ))}
                         </div>
                         <p className="text-sm text-gray-300 italic">"{r.review}"</p>
                         <div className="pt-2 border-t border-white/5 flex justify-between items-center text-xs">
                           <span className="font-bold text-white">{r.name}</span>
-                          <span className="text-[#D4AF37]">{r.dish}</span>
+                          <span className="text-[#E11D48]">{r.dish}</span>
                         </div>
                       </div>
                     ))}
@@ -868,7 +868,7 @@
             <section className="max-w-7xl mx-auto px-4 sm:px-6 py-10 animate-fade-up">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-8 border-b border-white/10">
                 <div>
-                  <span className="text-xs uppercase tracking-widest text-[#D4AF37]">Official TSO Multan Menu</span>
+                  <span className="text-xs uppercase tracking-widest text-[#E11D48]">Official TSO Multan Menu</span>
                   <h1 className="font-serif text-3xl sm:text-4xl font-bold text-white mt-1">
                     Explore & Customize Your Meal
                   </h1>
@@ -881,7 +881,7 @@
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search burgers, deep dish, shakes..."
-                    className="w-full bg-[#161618] border border-white/15 focus:border-[#D4AF37] rounded-full pl-10 pr-4 py-2.5 text-sm text-white outline-none"
+                    className="w-full bg-[#161618] border border-white/15 focus:border-[#E11D48] rounded-full pl-10 pr-4 py-2.5 text-sm text-white outline-none"
                   />
                 </div>
               </div>
@@ -894,7 +894,7 @@
                       onClick={() => setSelectedCategory(cat)}
                       className={`px-4 py-2 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap transition-all ${
                         selectedCategory === cat
-                          ? 'bg-[#D4AF37] text-black shadow-md'
+                          ? 'bg-[#E11D48] text-white shadow-md shadow-[#E11D48]/25'
                           : 'bg-[#161618] text-gray-300 hover:bg-white/10 border border-white/10'
                       }`}
                     >
@@ -918,7 +918,7 @@
                     onClick={() => setDietFilter(f.key)}
                     className={`px-3 py-1 rounded-lg text-xs font-medium border transition-all ${
                       dietFilter === f.key
-                        ? 'border-[#D4AF37] bg-[#D4AF37]/20 text-[#F3E5AB]'
+                        ? 'border-[#E11D48] bg-[#E11D48]/20 text-[#FDA4AF]'
                         : 'border-white/10 bg-white/5 text-gray-400 hover:text-white'
                     }`}
                   >
@@ -932,7 +932,7 @@
                   <div
                     key={dish.id}
                     onClick={() => openDishModal(dish)}
-                    className="bg-[#141416] border border-white/10 hover:border-[#D4AF37]/60 rounded-2xl overflow-hidden cursor-pointer transition-all flex flex-col justify-between group"
+                    className="bg-[#141416] border border-white/10 hover:border-[#E11D48]/60 rounded-2xl overflow-hidden cursor-pointer transition-all flex flex-col justify-between group"
                   >
                     <div className="relative h-52 overflow-hidden">
                       <img
@@ -961,16 +961,16 @@
                         )}
                       </div>
                       <span className="absolute bottom-3 right-3 bg-black/80 text-gray-200 text-[11px] px-2.5 py-1 rounded-full flex items-center gap-1">
-                        <Clock className="w-3 h-3 text-[#D4AF37]" /> {dish.prepTimeMins}m
+                        <Clock className="w-3 h-3 text-[#E11D48]" /> {dish.prepTimeMins}m
                       </span>
                     </div>
 
                     <div className="p-5 flex-1 flex flex-col justify-between">
                       <div>
-                        <span className="text-[11px] text-[#D4AF37] uppercase tracking-wider font-semibold">
+                        <span className="text-[11px] text-[#E11D48] uppercase tracking-wider font-semibold">
                           {dish.category}
                         </span>
-                        <h3 className="font-serif text-xl font-bold text-white mt-0.5 group-hover:text-[#D4AF37] transition-colors">
+                        <h3 className="font-serif text-xl font-bold text-white mt-0.5 group-hover:text-[#E11D48] transition-colors">
                           {dish.name}
                         </h3>
                         <p className="text-xs text-gray-400 mt-1.5 line-clamp-2">{dish.description}</p>
@@ -981,7 +981,7 @@
                           <span className="text-xs text-gray-400 block">Price</span>
                           <span className="text-lg font-bold text-white">Rs. {dish.price.toLocaleString()}</span>
                         </div>
-                        <button className="px-4 py-2 rounded-full bg-[#D4AF37] text-black font-bold text-xs group-hover:bg-[#F3E5AB] transition-all">
+                        <button className="px-4 py-2 rounded-full bg-[#E11D48] text-white font-bold text-xs group-hover:bg-[#BE123C] transition-all">
                           Customize +
                         </button>
                       </div>
@@ -997,23 +997,23 @@
             <section className="max-w-4xl mx-auto px-4 sm:px-6 py-10 animate-fade-up">
               {!activeOrderId ? (
                 <div className="bg-[#141416] border border-white/10 rounded-3xl p-10 text-center space-y-5">
-                  <Bike className="w-14 h-14 text-[#D4AF37] mx-auto" />
+                  <Bike className="w-14 h-14 text-[#E11D48] mx-auto" />
                   <h2 className="font-serif text-3xl font-bold text-white">No Active Order Right Now</h2>
                   <p className="text-sm text-gray-400 max-w-md mx-auto">
                     Add your favorite Smash Burgers or Deep Dish Pizza to the bag and complete checkout to test our live 2.5-minute rider tracking showcase!
                   </p>
                   <button
                     onClick={() => setActiveTab('menu')}
-                    className="px-7 py-3.5 bg-[#D4AF37] text-black font-bold rounded-full text-sm"
+                    className="px-7 py-3.5 bg-[#E11D48] hover:bg-[#BE123C] text-white font-bold rounded-full text-sm"
                   >
                     Browse Menu & Place an Order
                   </button>
                 </div>
               ) : (
-                <div className="bg-[#141416] border border-[#D4AF37]/30 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-8">
+                <div className="bg-[#141416] border border-[#E11D48]/30 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-8">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-6">
                     <div>
-                      <span className="text-xs uppercase tracking-widest text-[#D4AF37] font-mono">
+                      <span className="text-xs uppercase tracking-widest text-[#E11D48] font-mono">
                         LIVE MULTAN GPS TRACKER • ORDER #{activeOrderId}
                       </span>
                       <h2 className="font-serif text-2xl sm:text-3xl font-bold text-white mt-1">
@@ -1023,9 +1023,9 @@
                         {orderStep === 3 && 'Order Delivered — Bon Appétit!'}
                       </h2>
                     </div>
-                    <div className="bg-[#1C1C20] border border-[#D4AF37]/40 px-5 py-3 rounded-2xl text-center shrink-0">
+                    <div className="bg-[#1C1C20] border border-[#E11D48]/40 px-5 py-3 rounded-2xl text-center shrink-0">
                       <span className="text-[11px] text-gray-400 uppercase block">Showcase Countdown</span>
-                      <span className="font-mono text-2xl font-bold text-[#D4AF37]">
+                      <span className="font-mono text-2xl font-bold text-[#E11D48]">
                         {Math.floor(remainingSeconds / 60)}:{String(remainingSeconds % 60).padStart(2, '0')}
                       </span>
                     </div>
@@ -1044,11 +1044,11 @@
                           key={m.step}
                           className={`p-3 rounded-2xl border text-center transition-all ${
                             active
-                              ? 'bg-[#D4AF37]/15 border-[#D4AF37] text-white'
+                              ? 'bg-[#E11D48]/15 border-[#E11D48] text-white'
                               : 'bg-white/5 border-white/10 text-gray-500'
                           }`}
                         >
-                          <CheckCircle2 className={`w-6 h-6 mx-auto mb-1.5 ${active ? 'text-[#D4AF37]' : 'text-gray-600'}`} />
+                          <CheckCircle2 className={`w-6 h-6 mx-auto mb-1.5 ${active ? 'text-[#E11D48]' : 'text-gray-600'}`} />
                           <p className="text-xs sm:text-sm font-bold">{m.title}</p>
                           <p className="text-[10px] text-gray-400 hidden sm:block">{m.sub}</p>
                         </div>
@@ -1061,14 +1061,14 @@
                     <svg className="absolute inset-0 w-full h-full opacity-20" xmlns="http://www.w3.org/2000/svg">
                       <defs>
                         <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#D4AF37" strokeWidth="0.6" />
+                          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#E11D48" strokeWidth="0.6" />
                         </pattern>
                       </defs>
                       <rect width="100%" height="100%" fill="url(#grid)" />
                     </svg>
 
                     <div className="relative z-10 flex justify-between items-center text-xs">
-                      <span className="bg-black/80 px-3 py-1.5 rounded-full border border-[#D4AF37]/40 text-[#F3E5AB]">
+                      <span className="bg-black/80 px-3 py-1.5 rounded-full border border-[#E11D48]/40 text-[#FDA4AF]">
                         📍 Origin: TSO (7 Shalimar Colony, Model Town)
                       </span>
                       <span className="bg-black/80 px-3 py-1.5 rounded-full border border-emerald-500/40 text-emerald-300">
@@ -1079,7 +1079,7 @@
                     <div className="relative z-10 my-auto py-8">
                       <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
                         <div
-                          className="h-full bg-gradient-to-r from-[#D4AF37] to-emerald-400 transition-all duration-700"
+                          className="h-full bg-gradient-to-r from-[#E11D48] to-emerald-400 transition-all duration-700"
                           style={{ width: `${riderProgressPercent}%` }}
                         />
                       </div>
@@ -1088,10 +1088,10 @@
                         className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 transition-all duration-700"
                         style={{ left: `${riderProgressPercent}%` }}
                       >
-                        <div className="bg-[#D4AF37] text-black p-2.5 rounded-full shadow-2xl ring-4 ring-[#D4AF37]/30 flex items-center gap-1">
+                        <div className="bg-[#E11D48] text-white p-2.5 rounded-full shadow-2xl ring-4 ring-[#E11D48]/30 flex items-center gap-1">
                           <Bike className="w-5 h-5" />
                         </div>
-                        <span className="block text-[10px] font-bold bg-black/90 text-[#D4AF37] px-2 py-0.5 rounded mt-1 whitespace-nowrap">
+                        <span className="block text-[10px] font-bold bg-black/90 text-[#FDA4AF] px-2 py-0.5 rounded mt-1 whitespace-nowrap">
                           Bilal Ahmed ({riderProgressPercent}%)
                         </span>
                       </div>
@@ -1106,7 +1106,7 @@
                   {/* Rider Card */}
                   <div className="bg-[#1B1B1F] border border-white/10 rounded-2xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                     <div className="flex items-center gap-4">
-                      <div className="w-14 h-14 rounded-2xl bg-[#D4AF37]/20 border border-[#D4AF37] flex items-center justify-center text-[#D4AF37] font-serif font-bold text-xl">
+                      <div className="w-14 h-14 rounded-2xl bg-[#E11D48]/20 border border-[#E11D48] flex items-center justify-center text-[#E11D48] font-serif font-bold text-xl">
                         BA
                       </div>
                       <div>
@@ -1127,11 +1127,11 @@
                         onClick={() => setIsCallModalOpen(true)}
                         className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-semibold transition-all"
                       >
-                        <Phone className="w-4 h-4 text-[#D4AF37]" /> Call Bilal
+                        <Phone className="w-4 h-4 text-[#E11D48]" /> Call Bilal
                       </button>
                       <button
                         onClick={() => setIsChatOpen(true)}
-                        className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#D4AF37] hover:bg-[#F3E5AB] text-black text-xs font-bold transition-all"
+                        className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#E11D48] hover:bg-[#BE123C] text-white text-xs font-bold transition-all"
                       >
                         <MessageSquare className="w-4 h-4" /> Live Chat
                       </button>
@@ -1147,7 +1147,7 @@
                           : `Paid Online (${orderSnapshotMethod}) — Rs. 0 to pay rider`}
                       </strong>
                     </div>
-                    <div className="text-lg font-bold text-[#D4AF37]">
+                    <div className="text-lg font-bold text-[#E11D48]">
                       Total: Rs. {orderSnapshotTotal.toLocaleString()}
                     </div>
                   </div>
@@ -1159,8 +1159,8 @@
           {/* ==================== RESERVATIONS VIEW ==================== */}
           {activeTab === 'reservations' && (
             <section className="max-w-3xl mx-auto px-4 sm:px-6 py-12 animate-fade-up">
-              <div className="bg-[#141416] border border-[#D4AF37]/30 rounded-3xl p-6 sm:p-10 shadow-2xl">
-                <span className="text-xs uppercase tracking-widest text-[#D4AF37]">VIP Table Booking</span>
+              <div className="bg-[#141416] border border-[#E11D48]/30 rounded-3xl p-6 sm:p-10 shadow-2xl">
+                <span className="text-xs uppercase tracking-widest text-[#E11D48]">VIP Table Booking</span>
                 <h1 className="font-serif text-3xl sm:text-4xl font-bold text-white mt-1 mb-2">
                   Reserve Your Table at TSO Multan
                 </h1>
@@ -1178,7 +1178,7 @@
                     </p>
                     <button
                       onClick={() => setResConfirmed(false)}
-                      className="px-6 py-2.5 bg-[#D4AF37] text-black font-bold rounded-full text-xs"
+                      className="px-6 py-2.5 bg-[#E11D48] text-white font-bold rounded-full text-xs"
                     >
                       Modify Reservation
                     </button>
@@ -1200,7 +1200,7 @@
                           value={resName}
                           onChange={(e) => setResName(e.target.value)}
                           placeholder="e.g. Shahmir Qureshi"
-                          className="w-full bg-[#1C1C20] border border-white/15 rounded-xl p-3 text-sm text-white focus:border-[#D4AF37] outline-none"
+                          className="w-full bg-[#1C1C20] border border-white/15 rounded-xl p-3 text-sm text-white focus:border-[#E11D48] outline-none"
                         />
                       </div>
                       <div>
@@ -1211,7 +1211,7 @@
                           value={resPhone}
                           onChange={(e) => setResPhone(e.target.value)}
                           placeholder="0300-1234567"
-                          className="w-full bg-[#1C1C20] border border-white/15 rounded-xl p-3 text-sm text-white focus:border-[#D4AF37] outline-none"
+                          className="w-full bg-[#1C1C20] border border-white/15 rounded-xl p-3 text-sm text-white focus:border-[#E11D48] outline-none"
                         />
                       </div>
                     </div>
@@ -1224,7 +1224,7 @@
                           required
                           value={resDate}
                           onChange={(e) => setResDate(e.target.value)}
-                          className="w-full bg-[#1C1C20] border border-white/15 rounded-xl p-3 text-sm text-white focus:border-[#D4AF37] outline-none"
+                          className="w-full bg-[#1C1C20] border border-white/15 rounded-xl p-3 text-sm text-white focus:border-[#E11D48] outline-none"
                         />
                       </div>
                       <div>
@@ -1234,7 +1234,7 @@
                           required
                           value={resTime}
                           onChange={(e) => setResTime(e.target.value)}
-                          className="w-full bg-[#1C1C20] border border-white/15 rounded-xl p-3 text-sm text-white focus:border-[#D4AF37] outline-none"
+                          className="w-full bg-[#1C1C20] border border-white/15 rounded-xl p-3 text-sm text-white focus:border-[#E11D48] outline-none"
                         />
                       </div>
                       <div>
@@ -1261,7 +1261,7 @@
 
                     <button
                       type="submit"
-                      className="w-full py-4 bg-[#D4AF37] hover:bg-[#F3E5AB] text-black font-bold rounded-xl text-sm transition-all shadow-lg"
+                      className="w-full py-4 bg-[#E11D48] hover:bg-[#BE123C] text-white font-bold rounded-xl text-sm transition-all shadow-lg shadow-[#E11D48]/25"
                     >
                       Confirm Table Reservation
                     </button>
@@ -1274,12 +1274,12 @@
           {/* ==================== DISH CUSTOMIZATION MODAL ==================== */}
           {activeDish && (
             <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-              <div className="bg-[#141417] border border-[#D4AF37]/40 rounded-3xl max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl animate-fade-up">
+              <div className="bg-[#141417] border border-[#E11D48]/40 rounded-3xl max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl animate-fade-up">
                 <div className="relative h-56">
                   <img src={activeDish.image} alt={activeDish.name} className="w-full h-full object-cover" />
                   <button
                     onClick={() => setActiveDish(null)}
-                    className="absolute top-4 right-4 bg-black/80 text-white p-2 rounded-full hover:bg-[#D4AF37] hover:text-black transition-all"
+                    className="absolute top-4 right-4 bg-black/80 text-white p-2 rounded-full hover:bg-[#E11D48] hover:text-white transition-all"
                   >
                     <X className="w-5 h-5" />
                   </button>
@@ -1289,7 +1289,7 @@
                   <div>
                     <h3 className="font-serif text-2xl font-bold text-white">{activeDish.name}</h3>
                     <p className="text-xs text-gray-400 mt-1">{activeDish.description}</p>
-                    <p className="text-lg font-bold text-[#D4AF37] mt-2">
+                    <p className="text-lg font-bold text-[#E11D48] mt-2">
                       Base Price: Rs. {activeDish.price.toLocaleString()}
                     </p>
                   </div>
@@ -1307,7 +1307,7 @@
                             onClick={() => setSelectedPortion(p)}
                             className={`w-full flex items-center justify-between p-3 rounded-xl border text-xs font-medium transition-all ${
                               selectedPortion.id === p.id
-                                ? 'border-[#D4AF37] bg-[#D4AF37]/15 text-white'
+                                ? 'border-[#E11D48] bg-[#E11D48]/15 text-white'
                                 : 'border-white/10 bg-white/5 text-gray-300'
                             }`}
                           >
@@ -1339,12 +1339,12 @@
                             }}
                             className={`p-2.5 rounded-xl border text-left text-xs flex items-center justify-between transition-all ${
                               isSelected
-                                ? 'border-[#D4AF37] bg-[#D4AF37]/15 text-white'
+                                ? 'border-[#E11D48] bg-[#E11D48]/15 text-white'
                                 : 'border-white/10 bg-white/5 text-gray-400'
                             }`}
                           >
                             <span className="truncate pr-1">{addon.name}</span>
-                            <span className="text-[#D4AF37] font-semibold shrink-0">+Rs.{addon.price}</span>
+                            <span className="text-[#E11D48] font-semibold shrink-0">+Rs.{addon.price}</span>
                           </button>
                         );
                       })}
@@ -1360,7 +1360,7 @@
                       value={dishNotes}
                       onChange={(e) => setDishNotes(e.target.value)}
                       placeholder="e.g. Extra crispy edges, less jalapeños..."
-                      className="w-full bg-[#1C1C20] border border-white/15 rounded-xl p-3 text-xs text-white focus:border-[#D4AF37] outline-none"
+                      className="w-full bg-[#1C1C20] border border-white/15 rounded-xl p-3 text-xs text-white focus:border-[#E11D48] outline-none"
                     />
                   </div>
 
@@ -1378,7 +1378,7 @@
                     <button
                       type="button"
                       onClick={handleAddToCart}
-                      className="flex-1 py-3.5 bg-[#D4AF37] hover:bg-[#F3E5AB] text-black font-bold rounded-xl text-sm transition-all"
+                      className="flex-1 py-3.5 bg-[#E11D48] hover:bg-[#BE123C] text-white font-bold rounded-xl text-sm transition-all shadow-lg shadow-[#E11D48]/25"
                     >
                       Add to Bag — Rs.{' '}
                       {(
@@ -1397,12 +1397,12 @@
           {/* ==================== SLIDE-OUT CART DRAWER ==================== */}
           {isCartOpen && (
             <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex justify-end">
-              <div className="bg-[#121215] border-l border-[#D4AF37]/30 w-full max-w-md h-full flex flex-col justify-between p-6 overflow-y-auto">
+              <div className="bg-[#121215] border-l border-[#E11D48]/30 w-full max-w-md h-full flex flex-col justify-between p-6 overflow-y-auto">
                 <div>
                   <div className="flex items-center justify-between pb-4 border-b border-white/10">
                     <div>
                       <h2 className="font-serif text-2xl font-bold text-white">Your TSO Bag</h2>
-                      <p className="text-xs text-[#D4AF37]">
+                      <p className="text-xs text-[#E11D48]">
                         Estimated Prep & Delivery: ~{estimatedPrepTime} mins
                       </p>
                     </div>
@@ -1425,7 +1425,7 @@
                               <h4 className="font-bold text-sm text-white">{item.dish.name}</h4>
                               <p className="text-[11px] text-gray-400">{item.portion.name}</p>
                               {item.addons.length > 0 && (
-                                <p className="text-[11px] text-[#D4AF37]">
+                                <p className="text-[11px] text-[#FDA4AF]">
                                   + {item.addons.map((a) => a.name).join(', ')}
                                 </p>
                               )}
@@ -1480,8 +1480,8 @@
                   {cart.length > 0 && (
                     <div className="pt-3 border-t border-white/10">
                       <label className="text-xs text-gray-400 block mb-1.5">
-                        Promo Code (Try <strong className="text-[#D4AF37]">TSO10</strong> or{' '}
-                        <strong className="text-[#D4AF37]">SMASH200</strong>)
+                        Promo Code (Try <strong className="text-[#E11D48]">TSO10</strong> or{' '}
+                        <strong className="text-[#E11D48]">SMASH200</strong>)
                       </label>
                       <div className="flex gap-2">
                         <input
@@ -1494,12 +1494,12 @@
                         <button
                           type="button"
                           onClick={handleApplyPromo}
-                          className="px-4 py-2 bg-white/10 hover:bg-[#D4AF37] hover:text-black text-white rounded-xl text-xs font-bold transition-all"
+                          className="px-4 py-2 bg-white/10 hover:bg-[#E11D48] hover:text-white text-white rounded-xl text-xs font-bold transition-all"
                         >
                           Apply
                         </button>
                       </div>
-                      {promoMessage && <p className="text-[11px] text-[#D4AF37] mt-1">{promoMessage}</p>}
+                      {promoMessage && <p className="text-[11px] text-[#FDA4AF] mt-1">{promoMessage}</p>}
                     </div>
                   )}
                 </div>
@@ -1526,7 +1526,7 @@
                     </div>
                     <div className="flex justify-between text-base font-bold text-white pt-2 border-t border-white/10">
                       <span>Grand Total</span>
-                      <span className="text-[#D4AF37]">Rs. {grandTotal.toLocaleString()}</span>
+                      <span className="text-[#E11D48]">Rs. {grandTotal.toLocaleString()}</span>
                     </div>
 
                     <button
@@ -1534,7 +1534,7 @@
                         setCheckoutStep(1);
                         setIsCheckoutOpen(true);
                       }}
-                      className="w-full mt-3 py-3.5 bg-[#D4AF37] hover:bg-[#F3E5AB] text-black font-bold rounded-xl text-sm transition-all shadow-lg"
+                      className="w-full mt-3 py-3.5 bg-[#E11D48] hover:bg-[#BE123C] text-white font-bold rounded-xl text-sm transition-all shadow-lg shadow-[#E11D48]/25"
                     >
                       Proceed to 2-Step Checkout
                     </button>
@@ -1547,10 +1547,10 @@
           {/* ==================== 2-STEP CHECKOUT MODAL ==================== */}
           {isCheckoutOpen && (
             <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
-              <div className="bg-[#141418] border border-[#D4AF37]/40 rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-6 max-h-[92vh] overflow-y-auto animate-fade-up">
+              <div className="bg-[#141418] border border-[#E11D48]/40 rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-6 max-h-[92vh] overflow-y-auto animate-fade-up">
                 <div className="flex items-center justify-between border-b border-white/10 pb-4">
                   <div>
-                    <span className="text-[11px] uppercase tracking-widest text-[#D4AF37]">
+                    <span className="text-[11px] uppercase tracking-widest text-[#E11D48]">
                       Step {checkoutStep} of 2
                     </span>
                     <h3 className="font-serif text-2xl font-bold text-white">
@@ -1577,7 +1577,7 @@
                         value={customerName}
                         onChange={(e) => setCustomerName(e.target.value)}
                         placeholder="Enter your full name"
-                        className="w-full bg-[#1C1C20] border border-white/15 rounded-xl p-3 text-sm text-white focus:border-[#D4AF37] outline-none"
+                        className="w-full bg-[#1C1C20] border border-white/15 rounded-xl p-3 text-sm text-white focus:border-[#E11D48] outline-none"
                       />
                     </div>
                     <div>
@@ -1588,7 +1588,7 @@
                         value={customerPhone}
                         onChange={(e) => setCustomerPhone(e.target.value)}
                         placeholder="0300-1234567"
-                        className="w-full bg-[#1C1C20] border border-white/15 rounded-xl p-3 text-sm text-white focus:border-[#D4AF37] outline-none"
+                        className="w-full bg-[#1C1C20] border border-white/15 rounded-xl p-3 text-sm text-white focus:border-[#E11D48] outline-none"
                       />
                     </div>
 
@@ -1602,7 +1602,7 @@
                             key={area}
                             type="button"
                             onClick={() => setCustomerAddress(`${area}, Multan`)}
-                            className="text-[11px] bg-white/5 hover:bg-[#D4AF37]/20 border border-white/10 hover:border-[#D4AF37] text-gray-300 px-2.5 py-1 rounded-full transition-all"
+                            className="text-[11px] bg-white/5 hover:bg-[#E11D48]/20 border border-white/10 hover:border-[#E11D48] text-gray-300 px-2.5 py-1 rounded-full transition-all"
                           >
                             + {area}
                           </button>
@@ -1614,7 +1614,7 @@
                         value={customerAddress}
                         onChange={(e) => setCustomerAddress(e.target.value)}
                         placeholder="House #, Street, Block, Sector (e.g. House 14, Block B, Model Town, Multan)"
-                        className="w-full bg-[#1C1C20] border border-white/15 rounded-xl p-3 text-sm text-white focus:border-[#D4AF37] outline-none"
+                        className="w-full bg-[#1C1C20] border border-white/15 rounded-xl p-3 text-sm text-white focus:border-[#E11D48] outline-none"
                       />
                     </div>
 
@@ -1624,13 +1624,13 @@
                         value={deliveryInstructions}
                         onChange={(e) => setDeliveryInstructions(e.target.value)}
                         placeholder="e.g. Ring bell twice, leave at security gate"
-                        className="w-full bg-[#1C1C20] border border-white/15 rounded-xl p-3 text-sm text-white focus:border-[#D4AF37] outline-none"
+                        className="w-full bg-[#1C1C20] border border-white/15 rounded-xl p-3 text-sm text-white focus:border-[#E11D48] outline-none"
                       />
                     </div>
 
                     <button
                       type="submit"
-                      className="w-full py-3.5 bg-[#D4AF37] hover:bg-[#F3E5AB] text-black font-bold rounded-xl text-sm transition-all"
+                      className="w-full py-3.5 bg-[#E11D48] hover:bg-[#BE123C] text-white font-bold rounded-xl text-sm transition-all shadow-lg shadow-[#E11D48]/25"
                     >
                       Continue to Payment Options →
                     </button>
@@ -1643,11 +1643,11 @@
                         onClick={() => setPaymentMethod('COD')}
                         className={`p-3 rounded-2xl border text-center flex flex-col items-center gap-1.5 transition-all ${
                           paymentMethod === 'COD'
-                            ? 'border-[#D4AF37] bg-[#D4AF37]/15 text-white'
+                            ? 'border-[#E11D48] bg-[#E11D48]/15 text-white'
                             : 'border-white/10 bg-white/5 text-gray-400'
                         }`}
                       >
-                        <Banknote className="w-5 h-5 text-[#D4AF37]" />
+                        <Banknote className="w-5 h-5 text-[#E11D48]" />
                         <span className="text-xs font-bold">Cash on Delivery</span>
                       </button>
 
@@ -1656,11 +1656,11 @@
                         onClick={() => setPaymentMethod('CARD')}
                         className={`p-3 rounded-2xl border text-center flex flex-col items-center gap-1.5 transition-all ${
                           paymentMethod === 'CARD'
-                            ? 'border-[#D4AF37] bg-[#D4AF37]/15 text-white'
+                            ? 'border-[#E11D48] bg-[#E11D48]/15 text-white'
                             : 'border-white/10 bg-white/5 text-gray-400'
                         }`}
                       >
-                        <CreditCard className="w-5 h-5 text-[#D4AF37]" />
+                        <CreditCard className="w-5 h-5 text-[#E11D48]" />
                         <span className="text-xs font-bold">Debit / Credit Card</span>
                       </button>
 
@@ -1669,18 +1669,18 @@
                         onClick={() => setPaymentMethod('WALLET')}
                         className={`p-3 rounded-2xl border text-center flex flex-col items-center gap-1.5 transition-all ${
                           paymentMethod === 'WALLET'
-                            ? 'border-[#D4AF37] bg-[#D4AF37]/15 text-white'
+                            ? 'border-[#E11D48] bg-[#E11D48]/15 text-white'
                             : 'border-white/10 bg-white/5 text-gray-400'
                         }`}
                       >
-                        <Smartphone className="w-5 h-5 text-[#D4AF37]" />
+                        <Smartphone className="w-5 h-5 text-[#E11D48]" />
                         <span className="text-xs font-bold">Apple / Google Pay</span>
                       </button>
                     </div>
 
                     {paymentMethod === 'COD' && (
-                      <div className="p-4 rounded-2xl bg-amber-950/30 border border-[#D4AF37]/40 space-y-1">
-                        <p className="text-xs text-[#F3E5AB] font-bold">Cash on Delivery Selected</p>
+                      <div className="p-4 rounded-2xl bg-rose-950/30 border border-[#E11D48]/40 space-y-1">
+                        <p className="text-xs text-[#FDA4AF] font-bold">Cash on Delivery Selected</p>
                         <p className="text-xs text-gray-300">
                           Please keep exact <strong className="text-white">Rs. {grandTotal.toLocaleString()}</strong> ready to hand over to Rider Bilal Ahmed upon arrival.
                         </p>
@@ -1739,7 +1739,7 @@
                       </button>
                       <button
                         type="submit"
-                        className="flex-1 py-3.5 bg-[#D4AF37] hover:bg-[#F3E5AB] text-black font-bold rounded-xl text-sm transition-all shadow-xl"
+                        className="flex-1 py-3.5 bg-[#E11D48] hover:bg-[#BE123C] text-white font-bold rounded-xl text-sm transition-all shadow-xl shadow-[#E11D48]/25"
                       >
                         Place Order & Start Live Tracking (Rs. {grandTotal.toLocaleString()})
                       </button>
@@ -1753,8 +1753,8 @@
           {/* ==================== RIDER CALL & CHAT MODALS ==================== */}
           {isCallModalOpen && (
             <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
-              <div className="bg-[#16161A] border border-[#D4AF37]/40 rounded-3xl p-6 max-w-sm w-full text-center space-y-4">
-                <div className="w-16 h-16 rounded-full bg-[#D4AF37]/20 border border-[#D4AF37] flex items-center justify-center mx-auto text-[#D4AF37] animate-pulse">
+              <div className="bg-[#16161A] border border-[#E11D48]/40 rounded-3xl p-6 max-w-sm w-full text-center space-y-4">
+                <div className="w-16 h-16 rounded-full bg-[#E11D48]/20 border border-[#E11D48] flex items-center justify-center mx-auto text-[#E11D48] animate-pulse">
                   <Phone className="w-7 h-7" />
                 </div>
                 <h4 className="font-serif text-xl font-bold text-white">Calling Rider Bilal Ahmed...</h4>
@@ -1771,7 +1771,7 @@
 
           {isChatOpen && (
             <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
-              <div className="bg-[#141418] border border-[#D4AF37]/40 rounded-3xl max-w-md w-full p-5 flex flex-col h-[440px]">
+              <div className="bg-[#141418] border border-[#E11D48]/40 rounded-3xl max-w-md w-full p-5 flex flex-col h-[440px]">
                 <div className="flex justify-between items-center pb-3 border-b border-white/10">
                   <div>
                     <h4 className="font-bold text-white text-sm">Chat with Rider Bilal Ahmed</h4>
@@ -1788,7 +1788,7 @@
                       <div
                         className={`px-3.5 py-2 rounded-2xl text-xs max-w-[80%] ${
                           m.sender === 'user'
-                            ? 'bg-[#D4AF37] text-black font-medium'
+                            ? 'bg-[#E11D48] text-white font-medium'
                             : 'bg-white/10 text-white'
                         }`}
                       >
@@ -1806,7 +1806,7 @@
                     placeholder="Message Bilal Ahmed..."
                     className="flex-1 bg-[#1C1C20] border border-white/15 rounded-xl px-3 py-2 text-xs text-white outline-none"
                   />
-                  <button type="submit" className="p-2.5 bg-[#D4AF37] text-black rounded-xl font-bold">
+                  <button type="submit" className="p-2.5 bg-[#E11D48] text-white rounded-xl font-bold">
                     <Send className="w-4 h-4" />
                   </button>
                 </form>
@@ -1820,7 +1820,7 @@
               <div className="space-y-2">
                 <h4 className="font-serif text-lg font-bold text-white">TSO — THE SMASH OVEN</h4>
                 <p>7, Shalimar Colony, Model Town, Multan, Punjab, Pakistan.</p>
-                <p className="text-[#D4AF37]">Open Daily: 9:00 AM – 5:00 AM</p>
+                <p className="text-[#E11D48]">Open Daily: 9:00 AM – 5:00 AM</p>
               </div>
               <div className="space-y-2">
                 <h4 className="font-bold text-white uppercase tracking-wider">Verified Policies</h4>
@@ -1837,11 +1837,11 @@
           </footer>
 
           {/* ==================== MOBILE STICKY BOTTOM BAR ==================== */}
-          <div className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-[#0B0B0C]/95 backdrop-blur-lg border-t border-[#D4AF37]/30 grid grid-cols-4 py-2 px-2">
+          <div className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-[#0B0B0C]/95 backdrop-blur-lg border-t border-[#E11D48]/30 grid grid-cols-4 py-2 px-2">
             <button
               onClick={() => setActiveTab('home')}
               className={`flex flex-col items-center gap-1 py-1 text-[11px] ${
-                activeTab === 'home' ? 'text-[#D4AF37] font-bold' : 'text-gray-400'
+                activeTab === 'home' ? 'text-[#E11D48] font-bold' : 'text-gray-400'
               }`}
             >
               <Sparkles className="w-4 h-4" />
@@ -1850,7 +1850,7 @@
             <button
               onClick={() => setActiveTab('menu')}
               className={`flex flex-col items-center gap-1 py-1 text-[11px] ${
-                activeTab === 'menu' ? 'text-[#D4AF37] font-bold' : 'text-gray-400'
+                activeTab === 'menu' ? 'text-[#E11D48] font-bold' : 'text-gray-400'
               }`}
             >
               <Utensils className="w-4 h-4" />
@@ -1859,7 +1859,7 @@
             <button
               onClick={() => setActiveTab('tracking')}
               className={`flex flex-col items-center gap-1 py-1 text-[11px] ${
-                activeTab === 'tracking' ? 'text-[#D4AF37] font-bold' : 'text-gray-400'
+                activeTab === 'tracking' ? 'text-[#E11D48] font-bold' : 'text-gray-400'
               }`}
             >
               <Bike className="w-4 h-4" />
@@ -1868,7 +1868,7 @@
             <button
               onClick={() => setActiveTab('reservations')}
               className={`flex flex-col items-center gap-1 py-1 text-[11px] ${
-                activeTab === 'reservations' ? 'text-[#D4AF37] font-bold' : 'text-gray-400'
+                activeTab === 'reservations' ? 'text-[#E11D48] font-bold' : 'text-gray-400'
               }`}
             >
               <Calendar className="w-4 h-4" />
