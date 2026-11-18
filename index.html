@@ -1799,4 +1799,88 @@
                   ))}
                 </div>
 
-                <form onSubmit={sendChatMessage} className="flex gap-2 pt-2 border-t border-
+                <form onSubmit={sendChatMessage} className="flex gap-2 pt-2 border-t border-white/10">
+                  <input
+                    value={chatDraft}
+                    onChange={(e) => setChatDraft(e.target.value)}
+                    placeholder="Message Bilal Ahmed..."
+                    className="flex-1 bg-[#1C1C20] border border-white/15 rounded-xl px-3 py-2 text-xs text-white outline-none"
+                  />
+                  <button type="submit" className="p-2.5 bg-[#f01e2c] text-white rounded-xl font-bold">
+                    <Send className="w-4 h-4" />
+                  </button>
+                </form>
+              </div>
+            </div>
+          )}
+
+          {/* ==================== FOOTER ==================== */}
+          <footer className="bg-[#080809] border-t border-white/10 py-12 mt-16">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 grid sm:grid-cols-3 gap-8 text-xs text-gray-400">
+              <div className="space-y-2">
+                <h4 className="font-serif text-lg font-bold text-white">TSO — THE SMASH OVE</h4>
+                <p>7, Shalimar Colony, Model Town, Multan, Punjab, Pakistan.</p>
+                <p className="text-[#f01e2c]">Open Daily: 9:00 AM – 5:00 AM</p>
+              </div>
+              <div className="space-y-2">
+                <h4 className="font-bold text-white uppercase tracking-wider">Verified Policies</h4>
+                <p>• 100% Halal Certified Meat & Ingredients</p>
+                <p>• Flat Rs. 150 Delivery Across Multan</p>
+                <p>• 16% PRA Standard GST Included at Checkout</p>
+              </div>
+              <div className="space-y-2">
+                <h4 className="font-bold text-white uppercase tracking-wider">Order & Support Desk</h4>
+                <p>Multan Branch Desk: (061) 622-4589</p>
+                <p>Active Promo Codes: TSO10 (10% Off) • SMASH200 (Rs. 200 Off)</p>
+              </div>
+            </div>
+          </footer>
+
+          {/* ==================== MOBILE STICKY BOTTOM BAR ==================== */}
+          <div className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-[#0B0B0C]/95 backdrop-blur-lg border-t border-[#f01e2c]/30 grid grid-cols-4 py-2 px-2">
+            <button
+              onClick={() => setActiveTab('home')}
+              className={`flex flex-col items-center gap-1 py-1 text-[11px] ${
+                activeTab === 'home' ? 'text-[#f01e2c] font-bold' : 'text-gray-400'
+              }`}
+            >
+              <Sparkles className="w-4 h-4" />
+              Home
+            </button>
+            <button
+              onClick={() => setActiveTab('menu')}
+              className={`flex flex-col items-center gap-1 py-1 text-[11px] ${
+                activeTab === 'menu' ? 'text-[#f01e2c] font-bold' : 'text-gray-400'
+              }`}
+            >
+              <Utensils className="w-4 h-4" />
+              Menu
+            </button>
+            <button
+              onClick={() => setActiveTab('tracking')}
+              className={`flex flex-col items-center gap-1 py-1 text-[11px] ${
+                activeTab === 'tracking' ? 'text-[#f01e2c] font-bold' : 'text-gray-400'
+              }`}
+            >
+              <Bike className="w-4 h-4" />
+              Track
+            </button>
+            <button
+              onClick={() => setActiveTab('reservations')}
+              className={`flex flex-col items-center gap-1 py-1 text-[11px] ${
+                activeTab === 'reservations' ? 'text-[#f01e2c] font-bold' : 'text-gray-400'
+              }`}
+            >
+              <Calendar className="w-4 h-4" />
+              Reserve
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
